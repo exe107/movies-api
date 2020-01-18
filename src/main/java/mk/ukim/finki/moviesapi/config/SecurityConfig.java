@@ -2,6 +2,7 @@ package mk.ukim.finki.moviesapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable() // consider enabling csrf
         .logout()
-        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT));
   }
 }

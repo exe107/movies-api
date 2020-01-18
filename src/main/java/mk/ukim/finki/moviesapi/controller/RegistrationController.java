@@ -73,10 +73,4 @@ public class RegistrationController {
       throw new LoginException();
     }
   }
-
-  //  @PostMapping("logout")
-  //  @ResponseStatus(HttpStatus.NO_CONTENT)
-  //  public void logout(HttpServletRequest request) throws ServletException {
-  //    request.logout();
-  //  }
 }
