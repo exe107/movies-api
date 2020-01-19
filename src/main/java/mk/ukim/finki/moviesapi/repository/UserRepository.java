@@ -1,9 +1,9 @@
 package mk.ukim.finki.moviesapi.repository;
 
-import mk.ukim.finki.moviesapi.model.jpa.User;
+import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
-  User findByUsername(String username);
+  UserEntity findByUsername(String username);
 }

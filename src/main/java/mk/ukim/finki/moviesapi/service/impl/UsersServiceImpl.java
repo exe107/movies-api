@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
-import mk.ukim.finki.moviesapi.model.jpa.User;
+import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.repository.UserRepository;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public User getUser(String username) {
+  public UserEntity getUser(String username) {
     return userRepository.findByUsername(username);
   }
 
   @Override
-  public User saveUser(User user) {
+  public UserEntity saveUser(UserEntity user) {
     return userRepository.save(user);
   }
 }

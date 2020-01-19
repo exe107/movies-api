@@ -2,9 +2,9 @@ package mk.ukim.finki.moviesapi.service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mk.ukim.finki.moviesapi.model.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.UserPersonalDetails;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
+import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
 
 public interface RegistrationService {
 

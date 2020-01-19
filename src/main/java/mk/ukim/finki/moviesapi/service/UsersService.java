@@ -1,10 +1,10 @@
 package mk.ukim.finki.moviesapi.service;
 
-import mk.ukim.finki.moviesapi.model.jpa.User;
+import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 
 public interface UsersService {
 
-  User getUser(String username);
+  UserEntity getUser(String username);
 
-  User saveUser(User user);
+  UserEntity saveUser(UserEntity user);
 }

@@ -1,6 +1,8 @@
 package mk.ukim.finki.moviesapi.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import mk.ukim.finki.moviesapi.security.provider.UserDetailsAuthenticationProvider;
+import mk.ukim.finki.moviesapi.security.service.UserDetailsServiceImpl;
+import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,21 +18,28 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired private UserDetailsService userDetailsService;
+  private UsersService usersService;
+
+  public SecurityConfig(UsersService usersService) {
+    super();
+    this.usersService = usersService;
+  }
 
   /**
-   * Configures a {@link DaoAuthenticationProvider} with a custom user details service and password
-   * encoder.
+   * Configures a {@link UserDetailsAuthenticationProvider} with a custom user details service and
+   * password encoder.
    *
    * @return the configured {@link DaoAuthenticationProvider}
    */
   @Bean
-  public AuthenticationProvider daoAuthenticationProvider() {
-    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-    authenticationProvider.setUserDetailsService(userDetailsService);
-    authenticationProvider.setPasswordEncoder(passwordEncoder());
+  public AuthenticationProvider userDetailsAuthenticationProvider() {
+    return
+        new UserDetailsAuthenticationProvider(userDetailsService(usersService), passwordEncoder());
+  }
 
-    return authenticationProvider;
+  @Bean
+  public UserDetailsService userDetailsService(UsersService usersService) {
+    return new UserDetailsServiceImpl(usersService);
   }
 
   @Bean
@@ -40,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authenticationProvider(daoAuthenticationProvider())
+    http.authenticationProvider(userDetailsAuthenticationProvider())
         .csrf()
         .disable() // consider enabling csrf
         .logout()

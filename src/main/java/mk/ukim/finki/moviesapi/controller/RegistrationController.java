@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import mk.ukim.finki.moviesapi.exception.LoginException;
 import mk.ukim.finki.moviesapi.exception.RegisterException;
-import mk.ukim.finki.moviesapi.model.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.UserPersonalDetails;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
+import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 
 import org.springframework.http.ResponseEntity;
@@ -67,8 +67,8 @@ public class RegistrationController {
       HttpServletRequest request, @RequestBody LoginCredentials credentials) {
 
     try {
-      UserPersonalDetails userPersonalDetails = registrationService.login(request, credentials);
-      return ResponseEntity.ok(userPersonalDetails);
+      UserPersonalDetails user = registrationService.login(request, credentials);
+      return ResponseEntity.ok(user);
     } catch (ServletException exception) {
       throw new LoginException();
     }

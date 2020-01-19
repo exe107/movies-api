@@ -2,10 +2,10 @@ package mk.ukim.finki.moviesapi.model.jpa;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,16 +16,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "user")
 @NoArgsConstructor
 @Setter
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private Long id;
+  @Id private String username;
 
   private String name;
   private String surname;
-  private String username;
   private String password;
+
+  @OneToMany(mappedBy = "user")
+  private List<MovieRatingEntity> ratedMovies;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,5 +68,9 @@ public class User implements UserDetails {
 
   public String getSurname() {
     return surname;
+  }
+
+  public List<MovieRatingEntity> getRatedMovies() {
+    return ratedMovies;
   }
 }

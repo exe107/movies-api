@@ -2,10 +2,11 @@ package mk.ukim.finki.moviesapi.service.impl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mk.ukim.finki.moviesapi.model.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.UserPersonalDetails;
-import mk.ukim.finki.moviesapi.model.jpa.User;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
+import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
+import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
+import mk.ukim.finki.moviesapi.service.MoviesService;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,21 +17,34 @@ public class RegistrationServiceImpl implements RegistrationService {
 
   private UsersService usersService;
   private PasswordEncoder passwordEncoder;
+  private MoviesService moviesService;
 
-  public RegistrationServiceImpl(UsersService usersService, PasswordEncoder passwordEncoder) {
+  /**
+   * Constructor.
+   *
+   * @param usersService {@link UsersService}
+   * @param passwordEncoder {@link PasswordEncoder}
+   * @param moviesService {@link MoviesService}
+   */
+  public RegistrationServiceImpl(
+      UsersService usersService,
+      PasswordEncoder passwordEncoder,
+      MoviesService moviesService) {
+
     this.usersService = usersService;
     this.passwordEncoder = passwordEncoder;
+    this.moviesService = moviesService;
   }
 
   @Override
   public boolean register(RegistrationDetails registrationDetails) {
-    User existingUser = usersService.getUser(registrationDetails.getUsername());
+    UserEntity existingUser = usersService.getUser(registrationDetails.getUsername());
 
     if (existingUser != null) {
       return false;
     }
 
-    User user = new User();
+    UserEntity user = new UserEntity();
     user.setName(registrationDetails.getName());
     user.setSurname(registrationDetails.getSurname());
     user.setUsername(registrationDetails.getUsername());
@@ -48,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     String password = loginCredentials.getPassword();
     request.login(username, password);
 
-    User user = usersService.getUser(username);
+    UserEntity user = usersService.getUser(username);
 
     return new UserPersonalDetails(user.getName(), user.getSurname());
   }

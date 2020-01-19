@@ -1,4 +1,4 @@
-package mk.ukim.finki.moviesapi.model;
+package mk.ukim.finki.moviesapi.model.dto;
 
 import lombok.Getter;
 
