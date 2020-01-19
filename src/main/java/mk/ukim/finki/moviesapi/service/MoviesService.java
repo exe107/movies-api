@@ -13,4 +13,6 @@ public interface MoviesService {
   MovieRatingEntity saveRating(String movieId, String username, Integer rating);
 
   List<UserMovieRating> getUserRatedMovies(String username);
+
+  void deleteRating(String movieId, String username);
 }

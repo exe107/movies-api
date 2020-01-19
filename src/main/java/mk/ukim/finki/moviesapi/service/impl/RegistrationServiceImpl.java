@@ -1,7 +1,6 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mk.ukim.finki.moviesapi.mapper.UsersMapper;

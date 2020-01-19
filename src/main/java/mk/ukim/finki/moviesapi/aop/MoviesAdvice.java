@@ -21,7 +21,7 @@ public class MoviesAdvice {
    */
   @Before(
       "execution(* mk.ukim.finki.moviesapi.controller.MoviesController.*(..))"
-          + " && args(movieDetails)")
+          + " && args(movieDetails, ..)")
   public void saveMovieInDatabase(MovieDetails movieDetails) {
     moviesService.saveMovie(movieDetails.getMovie());
   }

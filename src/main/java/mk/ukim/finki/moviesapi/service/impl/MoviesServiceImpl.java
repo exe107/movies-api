@@ -75,4 +75,16 @@ public class MoviesServiceImpl implements MoviesService {
 
     return moviesMapper.mapToUserMovieRatings(movieRatings);
   }
+
+  @Override
+  public void deleteRating(String movieId, String username) {
+    List<MovieRatingEntity> movieRatings = movieRatingRepository.findAllByUserUsername(username);
+
+    Optional<MovieRatingEntity> ratingToDelete =
+        movieRatings.stream()
+            .filter(movieRating -> movieRating.getId().getMovieId().equals(movieId))
+            .findFirst();
+
+    movieRatingRepository.delete(ratingToDelete.get());
+  }
 }
