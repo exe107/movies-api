@@ -7,6 +7,7 @@ import mk.ukim.finki.moviesapi.exception.LoginException;
 import mk.ukim.finki.moviesapi.exception.RegisterException;
 import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
 import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
+import mk.ukim.finki.moviesapi.model.dto.User;
 import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 
@@ -38,8 +39,9 @@ public class RegistrationController {
    *     returns a 409 code response.
    */
   @PostMapping("register")
-  public ResponseEntity<UserPersonalDetails> register(
-      HttpServletRequest request, @RequestBody RegistrationDetails registrationDetails) {
+  public ResponseEntity<User> register(
+      HttpServletRequest request, @RequestBody RegistrationDetails registrationDetails)
+      throws ServletException {
 
     boolean registered = registrationService.register(registrationDetails);
 
@@ -63,14 +65,11 @@ public class RegistrationController {
    *     returns a 401 code response.
    */
   @PostMapping("login")
-  public ResponseEntity<UserPersonalDetails> login(
-      HttpServletRequest request, @RequestBody LoginCredentials credentials) {
+  public ResponseEntity<User> login(
+      HttpServletRequest request, @RequestBody LoginCredentials credentials)
+      throws ServletException {
 
-    try {
-      UserPersonalDetails user = registrationService.login(request, credentials);
-      return ResponseEntity.ok(user);
-    } catch (ServletException exception) {
-      throw new LoginException();
-    }
+    User user = registrationService.login(request, credentials);
+    return ResponseEntity.ok(user);
   }
 }

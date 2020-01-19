@@ -3,7 +3,6 @@ package mk.ukim.finki.moviesapi.controller;
 import java.util.List;
 import mk.ukim.finki.moviesapi.model.dto.Movie;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRating;
-import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.service.MoviesService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +28,7 @@ public class MoviesController {
    * @return list of movie ratings
    */
   @GetMapping("movies/ratings/{username}")
-  public List<UserMovieRating> userRatings(@PathVariable(required = false) String username) {
+  public List<UserMovieRating> userRatings(@PathVariable String username) {
     return moviesService.getUserRatedMovies(username);
   }
 
@@ -44,8 +43,8 @@ public class MoviesController {
       @AuthenticationPrincipal Authentication authentication,
       @RequestBody UserMovieRating movieRating) {
 
-    UserEntity user = (UserEntity) authentication.getPrincipal();
+    String username = (String) authentication.getPrincipal();
     Movie movie = movieRating.getMovie();
-    moviesService.saveRating(movie.getId(), user.getUsername(), movieRating.getRating());
+    moviesService.saveRating(movie.getId(), username, movieRating.getRating());
   }
 }

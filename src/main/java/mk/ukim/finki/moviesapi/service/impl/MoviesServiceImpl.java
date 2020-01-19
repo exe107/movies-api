@@ -2,12 +2,14 @@ package mk.ukim.finki.moviesapi.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import mk.ukim.finki.moviesapi.mapper.MoviesMapper;
 import mk.ukim.finki.moviesapi.model.dto.Movie;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRating;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingKey;
+import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.repository.MovieRatingRepository;
 import mk.ukim.finki.moviesapi.repository.MovieRepository;
 import mk.ukim.finki.moviesapi.service.MoviesService;
@@ -43,27 +45,28 @@ public class MoviesServiceImpl implements MoviesService {
   }
 
   @Override
-  public void saveMovie(Movie movie) {
+  public MovieEntity saveMovie(Movie movie) {
 
     MovieEntity movieEntity = moviesMapper.mapToMovieEntity(movie);
-    movieRepository.save(movieEntity);
+
+    return movieRepository.save(movieEntity);
   }
 
   @Override
-  public void saveRating(String movieId, String username, Integer rating) {
+  public MovieRatingEntity saveRating(String movieId, String username, Integer rating) {
     MovieRatingKey primaryKey = new MovieRatingKey(username, movieId);
     MovieRatingEntity movieRating = new MovieRatingEntity();
     movieRating.setId(primaryKey);
     movieRating.setDate(new Date());
     movieRating.setRating(rating);
 
-//    UserEntity user = usersService.getUser(username);
-//    movieRating.setUser(user);
-//
-//    Optional<MovieEntity> movie = movieRepository.findById(movieId);
-//    movieRating.setMovie(movie.get());
+    UserEntity user = usersService.getUser(username);
+    movieRating.setUser(user);
 
-    movieRatingRepository.save(movieRating);
+    Optional<MovieEntity> movie = movieRepository.findById(movieId);
+    movieRating.setMovie(movie.get());
+
+    return movieRatingRepository.save(movieRating);
   }
 
   @Override

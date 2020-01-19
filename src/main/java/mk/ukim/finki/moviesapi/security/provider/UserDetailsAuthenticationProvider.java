@@ -1,5 +1,6 @@
 package mk.ukim.finki.moviesapi.security.provider;
 
+import mk.ukim.finki.moviesapi.exception.LoginException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,9 +31,6 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    UsernameNotFoundException exception =
-        new UsernameNotFoundException("Wrong username or password");
-
     UsernamePasswordAuthenticationToken token =
         (UsernamePasswordAuthenticationToken) authentication;
 
@@ -41,13 +39,13 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
     if (userDetails == null) {
-      throw exception;
+      throw new LoginException();
     }
 
     boolean passwordMatches = passwordEncoder.matches(password, userDetails.getPassword());
 
     if (!passwordMatches) {
-      throw exception;
+      throw new LoginException();
     }
 
     return new UsernamePasswordAuthenticationToken(username, password);

@@ -1,12 +1,14 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import mk.ukim.finki.moviesapi.mapper.UsersMapper;
 import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
 import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
+import mk.ukim.finki.moviesapi.model.dto.User;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
-import mk.ukim.finki.moviesapi.service.MoviesService;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,23 +19,21 @@ public class RegistrationServiceImpl implements RegistrationService {
 
   private UsersService usersService;
   private PasswordEncoder passwordEncoder;
-  private MoviesService moviesService;
+  private UsersMapper usersMapper;
 
   /**
    * Constructor.
    *
    * @param usersService {@link UsersService}
    * @param passwordEncoder {@link PasswordEncoder}
-   * @param moviesService {@link MoviesService}
+   * @param usersMapper {@link UsersMapper}
    */
   public RegistrationServiceImpl(
-      UsersService usersService,
-      PasswordEncoder passwordEncoder,
-      MoviesService moviesService) {
+      UsersService usersService, PasswordEncoder passwordEncoder, UsersMapper usersMapper) {
 
     this.usersService = usersService;
     this.passwordEncoder = passwordEncoder;
-    this.moviesService = moviesService;
+    this.usersMapper = usersMapper;
   }
 
   @Override
@@ -49,21 +49,22 @@ public class RegistrationServiceImpl implements RegistrationService {
     user.setSurname(registrationDetails.getSurname());
     user.setUsername(registrationDetails.getUsername());
     user.setPassword(passwordEncoder.encode(registrationDetails.getPassword()));
+    user.setRatedMovies(new ArrayList<>());
     usersService.saveUser(user);
 
     return true;
   }
 
   @Override
-  public UserPersonalDetails login(HttpServletRequest request, LoginCredentials loginCredentials)
+  public User login(HttpServletRequest request, LoginCredentials loginCredentials)
       throws ServletException {
 
     String username = loginCredentials.getUsername();
     String password = loginCredentials.getPassword();
     request.login(username, password);
 
-    UserEntity user = usersService.getUser(username);
+    UserEntity userEntity = usersService.getUser(username);
 
-    return new UserPersonalDetails(user.getName(), user.getSurname());
+    return usersMapper.mapToUser(userEntity);
   }
 }
