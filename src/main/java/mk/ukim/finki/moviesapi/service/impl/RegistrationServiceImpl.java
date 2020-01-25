@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mk.ukim.finki.moviesapi.mapper.UsersMapper;
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.dto.User;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 import mk.ukim.finki.moviesapi.service.UsersService;
@@ -36,7 +36,7 @@ public class RegistrationServiceImpl implements RegistrationService {
   }
 
   @Override
-  public boolean register(RegistrationDetails registrationDetails) {
+  public boolean register(RegistrationDetailsDto registrationDetails) {
     UserEntity existingUser = usersService.getUser(registrationDetails.getUsername());
 
     if (existingUser != null) {
@@ -55,7 +55,7 @@ public class RegistrationServiceImpl implements RegistrationService {
   }
 
   @Override
-  public User login(HttpServletRequest request, LoginCredentials loginCredentials)
+  public UserDto login(HttpServletRequest request, LoginCredentialsDto loginCredentials)
       throws ServletException {
 
     String username = loginCredentials.getUsername();

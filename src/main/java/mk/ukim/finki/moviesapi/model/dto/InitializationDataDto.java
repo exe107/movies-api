@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class InitializationData {
+public class InitializationDataDto {
 
-  private User user;
+  private UserDto user;
 }

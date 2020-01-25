@@ -1,8 +1,8 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
 import mk.ukim.finki.moviesapi.mapper.UsersMapper;
-import mk.ukim.finki.moviesapi.model.dto.InitializationData;
-import mk.ukim.finki.moviesapi.model.dto.User;
+import mk.ukim.finki.moviesapi.model.dto.InitializationDataDto;
+import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.service.InitializationDataService;
 import mk.ukim.finki.moviesapi.service.UsersService;
@@ -20,10 +20,10 @@ public class InitializationDataServiceImpl implements InitializationDataService 
   }
 
   @Override
-  public InitializationData createInitializationData(String username) {
+  public InitializationDataDto createInitializationData(String username) {
     UserEntity userEntity = usersService.getUser(username);
-    User user = usersMapper.mapToUser(userEntity);
+    UserDto user = usersMapper.mapToUser(userEntity);
 
-    return new InitializationData(user);
+    return new InitializationDataDto(user);
   }
 }

@@ -3,7 +3,7 @@ package mk.ukim.finki.moviesapi.model.dto;
 import lombok.Getter;
 
 @Getter
-public class RegistrationDetails {
+public class RegistrationDetailsDto {
 
   private String name;
   private String surname;

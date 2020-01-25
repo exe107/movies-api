@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.controller;
 
-import mk.ukim.finki.moviesapi.model.dto.InitializationData;
+import mk.ukim.finki.moviesapi.model.dto.InitializationDataDto;
 import mk.ukim.finki.moviesapi.service.InitializationDataService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,12 +21,12 @@ public class InitializationDataController {
    *
    * @param authentication the {@link Authentication} object containing the user logged in the
    *     application (if any).
-   * @return the {@link InitializationData}
+   * @return the {@link InitializationDataDto}
    */
   @GetMapping("initialization")
-  public InitializationData initialization(@AuthenticationPrincipal Authentication authentication) {
+  public InitializationDataDto initialization(@AuthenticationPrincipal Authentication authentication) {
     if (authentication == null) {
-      return new InitializationData();
+      return new InitializationDataDto();
     }
 
     String username = (String) authentication.getPrincipal();

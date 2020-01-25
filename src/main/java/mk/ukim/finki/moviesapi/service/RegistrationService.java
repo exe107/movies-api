@@ -2,13 +2,13 @@ package mk.ukim.finki.moviesapi.service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.dto.User;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.dto.UserDto;
 
 public interface RegistrationService {
 
-  boolean register(RegistrationDetails registrationDetails);
+  boolean register(RegistrationDetailsDto registrationDetails);
 
-  User login(HttpServletRequest request, LoginCredentials loginCredentials) throws ServletException;
+  UserDto login(HttpServletRequest request, LoginCredentialsDto loginCredentials) throws ServletException;
 }

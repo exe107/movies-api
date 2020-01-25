@@ -2,8 +2,8 @@ package mk.ukim.finki.moviesapi.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import mk.ukim.finki.moviesapi.model.dto.Movie;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieRating;
+import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 import org.springframework.stereotype.Component;
@@ -11,26 +11,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class MoviesMapper {
 
-  public MovieEntity mapToMovieEntity(Movie movie) {
+  /**
+   * Maps from {@link MovieDto} to {@link MovieEntity}.
+   *
+   * @param movie the movie details
+   * @return the mapped {@link MovieEntity}
+   */
+  public MovieEntity mapToMovieEntity(MovieDto movie) {
     return new MovieEntity(
-        movie.getId(), movie.getName(), movie.getYear(), movie.getImageUrl(), movie.getRating());
+        movie.getId(),
+        movie.getName(),
+        movie.getYear(),
+        movie.getGenres(),
+        movie.getImageUrl(),
+        movie.getRating());
   }
 
-  public List<UserMovieRating> mapToUserMovieRatings(List<MovieRatingEntity> movieRatings) {
+  public List<UserMovieRatingOutDto> mapToUserMovieRatings(List<MovieRatingEntity> movieRatings) {
     return movieRatings.stream().map(this::mapToUserMovieRating).collect(Collectors.toList());
   }
 
-  private UserMovieRating mapToUserMovieRating(MovieRatingEntity movieRatingEntity) {
+  private UserMovieRatingOutDto mapToUserMovieRating(MovieRatingEntity movieRatingEntity) {
     MovieEntity movieEntity = movieRatingEntity.getMovie();
 
-    Movie movie =
-        new Movie(
+    MovieDto movie =
+        new MovieDto(
             movieEntity.getId(),
             movieEntity.getName(),
             movieEntity.getYear(),
+            movieEntity.getGenres(),
             movieEntity.getImageUrl(),
             movieEntity.getRating());
 
-    return new UserMovieRating(movie, movieRatingEntity.getRating());
+    return new UserMovieRatingOutDto(
+        movie, movieRatingEntity.getRating(), movieRatingEntity.getDate());
   }
 }

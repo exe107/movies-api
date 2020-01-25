@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import mk.ukim.finki.moviesapi.mapper.MoviesMapper;
-import mk.ukim.finki.moviesapi.model.dto.Movie;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieRating;
+import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingKey;
@@ -45,7 +45,7 @@ public class MoviesServiceImpl implements MoviesService {
   }
 
   @Override
-  public MovieEntity saveMovie(Movie movie) {
+  public MovieEntity saveMovie(MovieDto movie) {
 
     MovieEntity movieEntity = moviesMapper.mapToMovieEntity(movie);
 
@@ -70,7 +70,7 @@ public class MoviesServiceImpl implements MoviesService {
   }
 
   @Override
-  public List<UserMovieRating> getUserRatedMovies(String username) {
+  public List<UserMovieRatingOutDto> getUserRatedMovies(String username) {
     List<MovieRatingEntity> movieRatings = movieRatingRepository.findAllByUserUsername(username);
 
     return moviesMapper.mapToUserMovieRatings(movieRatings);

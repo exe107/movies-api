@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class User {
+public class UserDto {
 
-  private UserPersonalDetails personalDetails;
-  private List<UserMovieRating> movieRatings;
+  private UserPersonalDetailsDto personalDetails;
+  private List<UserMovieRatingOutDto> movieRatings;
 }

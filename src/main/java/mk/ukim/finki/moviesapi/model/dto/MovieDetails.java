@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class MovieDetails {
 
-  private Movie movie;
+  private MovieDto movie;
 }

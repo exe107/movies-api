@@ -3,12 +3,11 @@ package mk.ukim.finki.moviesapi.controller;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import mk.ukim.finki.moviesapi.exception.LoginException;
 import mk.ukim.finki.moviesapi.exception.RegisterException;
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentials;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetails;
-import mk.ukim.finki.moviesapi.model.dto.User;
-import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetails;
+import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.dto.UserDto;
+import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetailsDto;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 
 import org.springframework.http.ResponseEntity;
@@ -35,19 +34,19 @@ public class RegistrationController {
    *
    * @param request the http request
    * @param registrationDetails the user's entered registration details
-   * @return the user's {@link UserPersonalDetails} if the username is not already taken. Otherwise
+   * @return the user's {@link UserPersonalDetailsDto} if the username is not already taken. Otherwise
    *     returns a 409 code response.
    */
   @PostMapping("register")
-  public ResponseEntity<User> register(
-      HttpServletRequest request, @RequestBody RegistrationDetails registrationDetails)
+  public ResponseEntity<UserDto> register(
+      HttpServletRequest request, @RequestBody RegistrationDetailsDto registrationDetails)
       throws ServletException {
 
     boolean registered = registrationService.register(registrationDetails);
 
     if (registered) {
-      LoginCredentials loginCredentials =
-          new LoginCredentials(
+      LoginCredentialsDto loginCredentials =
+          new LoginCredentialsDto(
               registrationDetails.getUsername(), registrationDetails.getPassword());
 
       return login(request, loginCredentials);
@@ -61,15 +60,15 @@ public class RegistrationController {
    *
    * @param request the http request
    * @param credentials the entered credentials
-   * @return the user's {@link UserPersonalDetails} if the entered credentials were valid. Otherwise
+   * @return the user's {@link UserPersonalDetailsDto} if the entered credentials were valid. Otherwise
    *     returns a 401 code response.
    */
   @PostMapping("login")
-  public ResponseEntity<User> login(
-      HttpServletRequest request, @RequestBody LoginCredentials credentials)
+  public ResponseEntity<UserDto> login(
+      HttpServletRequest request, @RequestBody LoginCredentialsDto credentials)
       throws ServletException {
 
-    User user = registrationService.login(request, credentials);
+    UserDto user = registrationService.login(request, credentials);
     return ResponseEntity.ok(user);
   }
 }
