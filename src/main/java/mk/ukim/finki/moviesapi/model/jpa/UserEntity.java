@@ -1,10 +1,14 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.NoArgsConstructor;
@@ -26,6 +30,13 @@ public class UserEntity implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<MovieRatingEntity> ratedMovies;
+
+  @ManyToMany
+  @JoinTable(
+      name = "watchlist",
+      joinColumns = @JoinColumn(name = "username"),
+      inverseJoinColumns = @JoinColumn(name = "movie_id"))
+  private List<MovieEntity> watchlist;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,5 +83,17 @@ public class UserEntity implements UserDetails {
 
   public List<MovieRatingEntity> getRatedMovies() {
     return ratedMovies;
+  }
+
+  public List<MovieEntity> getWatchlist() {
+    return watchlist;
+  }
+
+  public void addMovieToWatchlist(MovieEntity movieEntity) {
+    watchlist.add(movieEntity);
+  }
+
+  public void removeMovieFromWatchlist(MovieEntity movieEntityToRemove) {
+    watchlist.removeIf(movieEntity -> movieEntity.getId().equals(movieEntityToRemove.getId()));
   }
 }

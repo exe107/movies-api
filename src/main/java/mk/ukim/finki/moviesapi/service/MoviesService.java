@@ -14,5 +14,9 @@ public interface MoviesService {
 
   List<UserMovieRatingOutDto> getUserRatedMovies(String username);
 
-  void deleteRating(String movieId, String username);
+  void deleteRating(String username, String movieId);
+
+  void addMovieToWatchlist(String username, String movieId);
+
+  void removeMovieFromWatchlist(String username, String movieId);
 }

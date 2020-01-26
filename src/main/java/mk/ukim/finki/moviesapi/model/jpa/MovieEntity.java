@@ -23,13 +23,14 @@ public class MovieEntity {
   @Id private String id;
 
   private String name;
-  private int year;
+  private Integer year;
 
-  @ElementCollection
-  private List<String> genres;
+  @ElementCollection private List<String> genres;
 
   private String imageUrl;
 
   @Column(precision = 2, scale = 1)
   private BigDecimal rating;
+
+  private Integer runtime;
 }

@@ -1,6 +1,7 @@
 package mk.ukim.finki.moviesapi.mapper;
 
 import java.util.List;
+import mk.ukim.finki.moviesapi.model.dto.MovieDto;
 import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetailsDto;
@@ -30,6 +31,8 @@ public class UsersMapper {
     List<UserMovieRatingOutDto> movieRatings =
         moviesMapper.mapToUserMovieRatings(userEntity.getRatedMovies());
 
-    return new UserDto(personalDetails, movieRatings);
+    List<MovieDto> watchList = moviesMapper.mapToUserWatchlist(userEntity.getWatchlist());
+
+    return new UserDto(personalDetails, movieRatings, watchList);
   }
 }

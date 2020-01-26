@@ -77,7 +77,7 @@ public class MoviesServiceImpl implements MoviesService {
   }
 
   @Override
-  public void deleteRating(String movieId, String username) {
+  public void deleteRating(String username, String movieId) {
     List<MovieRatingEntity> movieRatings = movieRatingRepository.findAllByUserUsername(username);
 
     Optional<MovieRatingEntity> ratingToDelete =
@@ -86,5 +86,23 @@ public class MoviesServiceImpl implements MoviesService {
             .findFirst();
 
     movieRatingRepository.delete(ratingToDelete.get());
+  }
+
+  @Override
+  public void addMovieToWatchlist(String username, String movieId) {
+    UserEntity user = usersService.getUser(username);
+    Optional<MovieEntity> movieEntity = movieRepository.findById(movieId);
+    user.addMovieToWatchlist(movieEntity.get());
+
+    usersService.saveUser(user);
+  }
+
+  @Override
+  public void removeMovieFromWatchlist(String username, String movieId) {
+    UserEntity user = usersService.getUser(username);
+    Optional<MovieEntity> movieEntity = movieRepository.findById(movieId);
+    user.removeMovieFromWatchlist(movieEntity.get());
+
+    usersService.saveUser(user);
   }
 }

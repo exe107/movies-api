@@ -24,7 +24,8 @@ public class MoviesMapper {
         movie.getYear(),
         movie.getGenres(),
         movie.getImageUrl(),
-        movie.getRating());
+        movie.getRating(),
+        movie.getRuntime());
   }
 
   public List<UserMovieRatingOutDto> mapToUserMovieRatings(List<MovieRatingEntity> movieRatings) {
@@ -33,17 +34,24 @@ public class MoviesMapper {
 
   private UserMovieRatingOutDto mapToUserMovieRating(MovieRatingEntity movieRatingEntity) {
     MovieEntity movieEntity = movieRatingEntity.getMovie();
-
-    MovieDto movie =
-        new MovieDto(
-            movieEntity.getId(),
-            movieEntity.getName(),
-            movieEntity.getYear(),
-            movieEntity.getGenres(),
-            movieEntity.getImageUrl(),
-            movieEntity.getRating());
+    MovieDto movie = mapToUserMovie(movieEntity);
 
     return new UserMovieRatingOutDto(
         movie, movieRatingEntity.getRating(), movieRatingEntity.getDate());
+  }
+
+  public List<MovieDto> mapToUserWatchlist(List<MovieEntity> watchlist) {
+    return watchlist.stream().map(this::mapToUserMovie).collect(Collectors.toList());
+  }
+
+  private MovieDto mapToUserMovie(MovieEntity movieEntity) {
+    return new MovieDto(
+        movieEntity.getId(),
+        movieEntity.getName(),
+        movieEntity.getYear(),
+        movieEntity.getGenres(),
+        movieEntity.getImageUrl(),
+        movieEntity.getRating(),
+        movieEntity.getRuntime());
   }
 }

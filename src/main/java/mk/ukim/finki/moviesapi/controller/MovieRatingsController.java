@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MoviesController {
+public class MovieRatingsController {
 
   private MoviesService moviesService;
 
-  public MoviesController(MoviesService moviesService) {
+  public MovieRatingsController(MoviesService moviesService) {
     this.moviesService = moviesService;
   }
 
@@ -39,8 +39,8 @@ public class MoviesController {
   /**
    * Save the user rating for the given movie.
    *
-   * @param authentication the authentication object
    * @param movieRating dto containing movie data as well as the rating
+   * @param authentication the authentication object
    */
   @PostMapping("movies/ratings")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,6 +64,6 @@ public class MoviesController {
       @AuthenticationPrincipal Authentication authentication, @PathVariable String movieId) {
 
     String username = (String) authentication.getPrincipal();
-    moviesService.deleteRating(movieId, username);
+    moviesService.deleteRating(username, movieId);
   }
 }

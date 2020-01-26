@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mk.ukim.finki.moviesapi.mapper.UsersMapper;
@@ -48,7 +48,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     user.setSurname(registrationDetails.getSurname());
     user.setUsername(registrationDetails.getUsername());
     user.setPassword(passwordEncoder.encode(registrationDetails.getPassword()));
-    user.setRatedMovies(new ArrayList<>());
+    user.setRatedMovies(Collections.emptyList());
+    user.setWatchlist(Collections.emptyList());
     usersService.saveUser(user);
 
     return true;

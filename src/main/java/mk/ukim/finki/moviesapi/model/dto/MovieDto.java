@@ -11,8 +11,9 @@ public class MovieDto {
 
   private String id;
   private String name;
-  private int year;
+  private Integer year;
   private List<String> genres;
   private String imageUrl;
   private BigDecimal rating;
+  private Integer runtime;
 }

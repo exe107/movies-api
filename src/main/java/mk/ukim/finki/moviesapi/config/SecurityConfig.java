@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    */
   @Bean
   public AuthenticationProvider userDetailsAuthenticationProvider() {
-    return
-        new UserDetailsAuthenticationProvider(userDetailsService(usersService), passwordEncoder());
+    return new UserDetailsAuthenticationProvider(
+        userDetailsService(usersService), passwordEncoder());
   }
 
   @Bean
