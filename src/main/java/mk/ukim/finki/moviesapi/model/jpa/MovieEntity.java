@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,4 +35,12 @@ public class MovieEntity {
   private BigDecimal rating;
 
   private Integer runtime;
+
+  @OneToMany
+  @JoinColumn(name = "movie_id")
+  private List<CommentEntity> comments;
+
+  public void addComment(CommentEntity commentEntity) {
+    comments.add(commentEntity);
+  }
 }

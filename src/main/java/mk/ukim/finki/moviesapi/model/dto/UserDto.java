@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class UserDto {
 
+  private String username;
   private UserPersonalDetailsDto personalDetails;
   private List<UserMovieRatingOutDto> movieRatings;
   private List<MovieDto> watchlist;

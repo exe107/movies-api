@@ -33,6 +33,6 @@ public class UsersMapper {
 
     List<MovieDto> watchList = moviesMapper.mapToUserWatchlist(userEntity.getWatchlist());
 
-    return new UserDto(personalDetails, movieRatings, watchList);
+    return new UserDto(userEntity.getUsername(), personalDetails, movieRatings, watchList);
   }
 }

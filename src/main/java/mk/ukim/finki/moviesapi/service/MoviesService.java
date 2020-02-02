@@ -4,13 +4,16 @@ import java.util.List;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
-import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 
 public interface MoviesService {
 
-  MovieEntity saveMovie(MovieDto movie);
+  MovieEntity getMovie(String movieId);
 
-  MovieRatingEntity saveRating(String movieId, String username, Integer rating);
+  void saveMovie(MovieDto movie);
+
+  void saveMovie(MovieEntity movieEntity);
+
+  void saveRating(String username, String movieId, Integer rating);
 
   List<UserMovieRatingOutDto> getUserRatedMovies(String username);
 

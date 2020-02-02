@@ -45,15 +45,28 @@ public class MoviesServiceImpl implements MoviesService {
   }
 
   @Override
-  public MovieEntity saveMovie(MovieDto movie) {
-
-    MovieEntity movieEntity = moviesMapper.mapToMovieEntity(movie);
-
-    return movieRepository.save(movieEntity);
+  public MovieEntity getMovie(String movieId) {
+    return movieRepository.findById(movieId).get();
   }
 
   @Override
-  public MovieRatingEntity saveRating(String movieId, String username, Integer rating) {
+  public void saveMovie(MovieDto movie) {
+
+    Optional<MovieEntity> existingMovieEntity = movieRepository.findById(movie.getId());
+
+    if (!existingMovieEntity.isPresent()) {
+      MovieEntity movieEntity = moviesMapper.mapToMovieEntity(movie);
+      saveMovie(movieEntity);
+    }
+  }
+
+  @Override
+  public void saveMovie(MovieEntity movieEntity) {
+    movieRepository.save(movieEntity);
+  }
+
+  @Override
+  public void saveRating(String username, String movieId, Integer rating) {
     MovieRatingKey primaryKey = new MovieRatingKey(username, movieId);
     MovieRatingEntity movieRating = new MovieRatingEntity();
     movieRating.setId(primaryKey);
@@ -65,8 +78,7 @@ public class MoviesServiceImpl implements MoviesService {
 
     Optional<MovieEntity> movie = movieRepository.findById(movieId);
     movieRating.setMovie(movie.get());
-
-    return movieRatingRepository.save(movieRating);
+    movieRatingRepository.save(movieRating);
   }
 
   @Override
@@ -78,14 +90,7 @@ public class MoviesServiceImpl implements MoviesService {
 
   @Override
   public void deleteRating(String username, String movieId) {
-    List<MovieRatingEntity> movieRatings = movieRatingRepository.findAllByUserUsername(username);
-
-    Optional<MovieRatingEntity> ratingToDelete =
-        movieRatings.stream()
-            .filter(movieRating -> movieRating.getId().getMovieId().equals(movieId))
-            .findFirst();
-
-    movieRatingRepository.delete(ratingToDelete.get());
+    movieRatingRepository.deleteById(new MovieRatingKey(username, movieId));
   }
 
   @Override

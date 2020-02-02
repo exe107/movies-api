@@ -24,7 +24,9 @@ public class InitializationDataController {
    * @return the {@link InitializationDataDto}
    */
   @GetMapping("initialization")
-  public InitializationDataDto initialization(@AuthenticationPrincipal Authentication authentication) {
+  public InitializationDataDto initialization(
+      @AuthenticationPrincipal Authentication authentication) {
+
     if (authentication == null) {
       return new InitializationDataDto();
     }

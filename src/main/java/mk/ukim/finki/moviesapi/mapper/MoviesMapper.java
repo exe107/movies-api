@@ -1,5 +1,6 @@
 package mk.ukim.finki.moviesapi.mapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
@@ -25,7 +26,8 @@ public class MoviesMapper {
         movie.getGenres(),
         movie.getImageUrl(),
         movie.getRating(),
-        movie.getRuntime());
+        movie.getRuntime(),
+        Collections.emptyList());
   }
 
   public List<UserMovieRatingOutDto> mapToUserMovieRatings(List<MovieRatingEntity> movieRatings) {

@@ -50,7 +50,7 @@ public class MovieRatingsController {
 
     String username = (String) authentication.getPrincipal();
     MovieDto movie = movieRating.getMovie();
-    moviesService.saveRating(movie.getId(), username, movieRating.getRating());
+    moviesService.saveRating(username, movie.getId(), movieRating.getRating());
   }
 
   /**
