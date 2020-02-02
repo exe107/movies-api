@@ -3,8 +3,11 @@ package mk.ukim.finki.moviesapi.service.impl;
 import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import mk.ukim.finki.moviesapi.exception.PasswordMismatchException;
+import mk.ukim.finki.moviesapi.exception.UsernameAlreadyExistsException;
 import mk.ukim.finki.moviesapi.mapper.UsersMapper;
 import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.dto.PasswordChangeDto;
 import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
 import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
@@ -36,11 +39,11 @@ public class RegistrationServiceImpl implements RegistrationService {
   }
 
   @Override
-  public boolean register(RegistrationDetailsDto registrationDetails) {
+  public void register(RegistrationDetailsDto registrationDetails) {
     UserEntity existingUser = usersService.getUser(registrationDetails.getUsername());
 
     if (existingUser != null) {
-      return false;
+      throw new UsernameAlreadyExistsException();
     }
 
     UserEntity user = new UserEntity();
@@ -51,8 +54,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     user.setRatedMovies(Collections.emptyList());
     user.setWatchlist(Collections.emptyList());
     usersService.saveUser(user);
-
-    return true;
   }
 
   @Override
@@ -66,5 +67,20 @@ public class RegistrationServiceImpl implements RegistrationService {
     UserEntity userEntity = usersService.getUser(username);
 
     return usersMapper.mapToUser(userEntity);
+  }
+
+  @Override
+  public void changePassword(String username, PasswordChangeDto passwordDetails) {
+    UserEntity userEntity = usersService.getUser(username);
+
+    boolean matches =
+        passwordEncoder.matches(passwordDetails.getOldPassword(), userEntity.getPassword());
+
+    if (!matches) {
+      throw new PasswordMismatchException();
+    }
+
+    userEntity.setPassword(passwordEncoder.encode(passwordDetails.getNewPassword()));
+    usersService.saveUser(userEntity);
   }
 }
