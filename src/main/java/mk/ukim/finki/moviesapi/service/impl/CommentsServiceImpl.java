@@ -1,5 +1,6 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import mk.ukim.finki.moviesapi.mapper.CommentsMapper;
@@ -44,6 +45,10 @@ public class CommentsServiceImpl implements CommentsService {
   @Override
   public List<CommentOutDto> getMovieComments(String movieId) {
     MovieEntity movieEntity = moviesService.getMovie(movieId);
+
+    if (movieEntity == null) {
+      return Collections.emptyList();
+    }
 
     return commentsMapper.mapToMovieComments(movieEntity);
   }

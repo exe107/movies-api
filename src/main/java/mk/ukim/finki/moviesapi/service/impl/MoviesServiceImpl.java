@@ -46,7 +46,7 @@ public class MoviesServiceImpl implements MoviesService {
 
   @Override
   public MovieEntity getMovie(String movieId) {
-    return movieRepository.findById(movieId).get();
+    return movieRepository.findById(movieId).orElse(null);
   }
 
   @Override
