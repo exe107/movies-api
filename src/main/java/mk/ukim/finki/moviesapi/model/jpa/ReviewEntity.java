@@ -12,18 +12,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "review")
 @NoArgsConstructor
 @Getter
 @Setter
-public class CommentEntity {
+public class ReviewEntity {
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   private Long id;
 
   private Date date;
-  private String comment;
+  private String review;
+  private boolean approved;
 
   @ManyToOne private UserEntity user;
+  @ManyToOne private MovieEntity movie;
+
+  public boolean isPending() {
+    return !approved;
+  }
 }

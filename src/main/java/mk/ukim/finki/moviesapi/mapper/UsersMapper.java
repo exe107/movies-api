@@ -2,6 +2,7 @@ package mk.ukim.finki.moviesapi.mapper;
 
 import java.util.List;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.dto.PendingReviewOutDto;
 import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetailsDto;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Component;
 public class UsersMapper {
 
   private MoviesMapper moviesMapper;
+  private ReviewsMapper reviewsMapper;
 
-  public UsersMapper(MoviesMapper moviesMapper) {
+  public UsersMapper(MoviesMapper moviesMapper, ReviewsMapper reviewsMapper) {
     this.moviesMapper = moviesMapper;
+    this.reviewsMapper = reviewsMapper;
   }
 
   /**
@@ -33,6 +36,10 @@ public class UsersMapper {
 
     List<MovieDto> watchList = moviesMapper.mapToUserWatchlist(userEntity.getWatchlist());
 
-    return new UserDto(userEntity.getUsername(), personalDetails, movieRatings, watchList);
+    List<PendingReviewOutDto> pendingReviews =
+        reviewsMapper.mapToPendingReviews(userEntity.getReviews());
+
+    return new UserDto(
+        userEntity.getUsername(), personalDetails, movieRatings, watchList, pendingReviews);
   }
 }

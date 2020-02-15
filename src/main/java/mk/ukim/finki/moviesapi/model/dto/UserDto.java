@@ -12,4 +12,5 @@ public class UserDto {
   private UserPersonalDetailsDto personalDetails;
   private List<UserMovieRatingOutDto> movieRatings;
   private List<MovieDto> watchlist;
+  private List<PendingReviewOutDto> pendingReviews;
 }

@@ -1,6 +1,5 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +36,9 @@ public class UserEntity implements UserDetails {
       joinColumns = @JoinColumn(name = "username"),
       inverseJoinColumns = @JoinColumn(name = "movie_id"))
   private List<MovieEntity> watchlist;
+
+  @OneToMany(mappedBy = "user")
+  private List<ReviewEntity> reviews;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,6 +89,10 @@ public class UserEntity implements UserDetails {
 
   public List<MovieEntity> getWatchlist() {
     return watchlist;
+  }
+
+  public List<ReviewEntity> getReviews() {
+    return reviews;
   }
 
   public void addMovieToWatchlist(MovieEntity movieEntity) {

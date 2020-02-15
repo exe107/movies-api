@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CommentOutDto {
+public abstract class BaseReviewOutDto {
 
   private Long id;
   private String username;
-  private String comment;
+  private String review;
   private Date date;
 }
