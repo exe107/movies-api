@@ -1,15 +1,12 @@
 package mk.ukim.finki.moviesapi.controller;
 
-import java.util.List;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingInDto;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.service.MoviesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,17 +20,6 @@ public class MovieRatingsController {
 
   public MovieRatingsController(MoviesService moviesService) {
     this.moviesService = moviesService;
-  }
-
-  /**
-   * Returns the movie ratings for the given username.
-   *
-   * @param username the request username
-   * @return list of movie ratings
-   */
-  @GetMapping("movies/ratings/{username}")
-  public List<UserMovieRatingOutDto> userRatings(@PathVariable String username) {
-    return moviesService.getUserRatedMovies(username);
   }
 
   /**

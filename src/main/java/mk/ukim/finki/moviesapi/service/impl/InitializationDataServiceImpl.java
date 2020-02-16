@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
-import mk.ukim.finki.moviesapi.mapper.UsersMapper;
+import mk.ukim.finki.moviesapi.factory.UserFactory;
 import mk.ukim.finki.moviesapi.model.dto.InitializationDataDto;
 import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
 public class InitializationDataServiceImpl implements InitializationDataService {
 
   private UsersService usersService;
-  private UsersMapper usersMapper;
+  private UserFactory userFactory;
 
-  public InitializationDataServiceImpl(UsersService usersService, UsersMapper usersMapper) {
+  public InitializationDataServiceImpl(UsersService usersService, UserFactory userFactory) {
     this.usersService = usersService;
-    this.usersMapper = usersMapper;
+    this.userFactory = userFactory;
   }
 
   @Override
   public InitializationDataDto createInitializationData(String username) {
     UserEntity userEntity = usersService.getUser(username);
-    UserDto user = usersMapper.mapToUser(userEntity);
+    UserDto user = userFactory.createUserDto(userEntity);
 
     return new InitializationDataDto(user);
   }

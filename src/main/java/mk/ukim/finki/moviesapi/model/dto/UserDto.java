@@ -9,8 +9,9 @@ import lombok.Getter;
 public class UserDto {
 
   private String username;
+  private boolean admin;
   private UserPersonalDetailsDto personalDetails;
   private List<UserMovieRatingOutDto> movieRatings;
   private List<MovieDto> watchlist;
-  private List<PendingReviewOutDto> pendingReviews;
+  private List<ReviewOutDto> pendingReviews;
 }

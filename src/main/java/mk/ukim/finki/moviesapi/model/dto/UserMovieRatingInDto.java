@@ -3,7 +3,7 @@ package mk.ukim.finki.moviesapi.model.dto;
 import lombok.Getter;
 
 @Getter
-public class UserMovieRatingInDto extends MovieDetails {
+public class UserMovieRatingInDto extends MovieDetailsDto {
 
   private Integer rating;
 

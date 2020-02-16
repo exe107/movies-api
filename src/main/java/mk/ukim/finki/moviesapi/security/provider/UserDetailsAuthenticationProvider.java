@@ -21,8 +21,7 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
    * @param passwordEncoder {@link PasswordEncoder}
    */
   public UserDetailsAuthenticationProvider(
-      UserDetailsService userDetailsService,
-      PasswordEncoder passwordEncoder) {
+      UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
 
     this.userDetailsService = userDetailsService;
     this.passwordEncoder = passwordEncoder;
@@ -47,7 +46,8 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
       throw new LoginException();
     }
 
-    return new UsernamePasswordAuthenticationToken(username, password);
+    return new UsernamePasswordAuthenticationToken(
+        username, password, userDetails.getAuthorities());
   }
 
   @Override

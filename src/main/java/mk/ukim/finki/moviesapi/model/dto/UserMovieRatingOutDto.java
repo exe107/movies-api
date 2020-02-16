@@ -4,7 +4,7 @@ import java.util.Date;
 import lombok.Getter;
 
 @Getter
-public class UserMovieRatingOutDto extends MovieDetails {
+public class UserMovieRatingOutDto extends MovieDetailsDto {
 
   private Integer rating;
   private Date date;

@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.aop;
 
-import mk.ukim.finki.moviesapi.model.dto.MovieDetails;
+import mk.ukim.finki.moviesapi.model.dto.MovieDetailsDto;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
 import mk.ukim.finki.moviesapi.service.MoviesService;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +16,7 @@ public class MoviesAspect {
   }
 
   @Before("execution(* mk.ukim.finki.moviesapi.controller.*.*(..))" + " && args(movieDetails, ..)")
-  public void saveMovieInDatabase(MovieDetails movieDetails) {
+  public void saveMovieInDatabase(MovieDetailsDto movieDetails) {
     moviesService.saveMovie(movieDetails.getMovie());
   }
 

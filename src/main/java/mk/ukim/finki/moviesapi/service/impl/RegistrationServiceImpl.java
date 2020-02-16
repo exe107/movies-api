@@ -1,11 +1,16 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
+import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_USER;
+
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mk.ukim.finki.moviesapi.exception.PasswordMismatchException;
 import mk.ukim.finki.moviesapi.exception.UsernameAlreadyExistsException;
-import mk.ukim.finki.moviesapi.mapper.UsersMapper;
+import mk.ukim.finki.moviesapi.factory.UserFactory;
 import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
 import mk.ukim.finki.moviesapi.model.dto.PasswordChangeDto;
 import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
@@ -21,21 +26,21 @@ public class RegistrationServiceImpl implements RegistrationService {
 
   private UsersService usersService;
   private PasswordEncoder passwordEncoder;
-  private UsersMapper usersMapper;
+  private UserFactory userFactory;
 
   /**
    * Constructor.
    *
    * @param usersService {@link UsersService}
    * @param passwordEncoder {@link PasswordEncoder}
-   * @param usersMapper {@link UsersMapper}
+   * @param userFactory {@link UserFactory}
    */
   public RegistrationServiceImpl(
-      UsersService usersService, PasswordEncoder passwordEncoder, UsersMapper usersMapper) {
+      UsersService usersService, PasswordEncoder passwordEncoder, UserFactory userFactory) {
 
     this.usersService = usersService;
     this.passwordEncoder = passwordEncoder;
-    this.usersMapper = usersMapper;
+    this.userFactory = userFactory;
   }
 
   @Override
@@ -53,6 +58,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     user.setPassword(passwordEncoder.encode(registrationDetails.getPassword()));
     user.setRatedMovies(Collections.emptyList());
     user.setWatchlist(Collections.emptyList());
+    user.setReviews(Collections.emptyList());
+
+    Set<String> authorities = new HashSet<>(Collections.singletonList(ROLE_USER));
+    user.setAuthorities(authorities);
     usersService.saveUser(user);
   }
 
@@ -66,7 +75,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     UserEntity userEntity = usersService.getUser(username);
 
-    return usersMapper.mapToUser(userEntity);
+    return userFactory.createUserDto(userEntity);
   }
 
   @Override

@@ -1,10 +1,15 @@
 package mk.ukim.finki.moviesapi.config;
 
+import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_ADMIN;
+import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_USER;
+
 import mk.ukim.finki.moviesapi.security.provider.UserDetailsAuthenticationProvider;
 import mk.ukim.finki.moviesapi.security.service.UserDetailsServiceImpl;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -48,6 +53,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }
 
+  /**
+   * Defines the application's {@link RoleHierarchy}.
+   *
+   * @return the role hierarchy
+   */
+  @Bean
+  public RoleHierarchy roleHierarchy() {
+    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+
+    String hierarchy = String.format("%s > %s", ROLE_ADMIN, ROLE_USER);
+    roleHierarchy.setHierarchy(hierarchy);
+
+    return roleHierarchy;
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authenticationProvider(userDetailsAuthenticationProvider())
@@ -55,6 +75,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
         .logout()
-        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT));
+        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))
+        .and()
+        .authorizeRequests()
+        .mvcMatchers("register", "login")
+        .not()
+        .authenticated()
+        .mvcMatchers("logout")
+        .authenticated()
+        .mvcMatchers("**/watchlist/**")
+        .hasAuthority(ROLE_USER)
+        .mvcMatchers("reviews/{movieId:tt[0-9]+}")
+        .permitAll()
+        .mvcMatchers("reviews/approve", "reviews/reject")
+        .hasAuthority(ROLE_ADMIN)
+        .mvcMatchers("reviews/**")
+        .hasAuthority(ROLE_USER);
   }
 }

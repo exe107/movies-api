@@ -1,4 +1,4 @@
-package mk.ukim.finki.moviesapi.mapper;
+package mk.ukim.finki.moviesapi.factory;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,10 +10,10 @@ import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MoviesMapper {
+public class MovieFactory {
 
   /**
-   * Maps from {@link MovieDto} to {@link MovieEntity}.
+   * Creates a {@link MovieEntity} from {@link MovieDto}.
    *
    * @param movie the movie details
    * @return the mapped {@link MovieEntity}
@@ -30,23 +30,23 @@ public class MoviesMapper {
         Collections.emptyList());
   }
 
-  public List<UserMovieRatingOutDto> mapToUserMovieRatings(List<MovieRatingEntity> movieRatings) {
-    return movieRatings.stream().map(this::mapToUserMovieRating).collect(Collectors.toList());
+  public List<UserMovieRatingOutDto> createUserMovieRatings(List<MovieRatingEntity> movieRatings) {
+    return movieRatings.stream().map(this::createUserMovieRating).collect(Collectors.toList());
   }
 
-  private UserMovieRatingOutDto mapToUserMovieRating(MovieRatingEntity movieRatingEntity) {
+  private UserMovieRatingOutDto createUserMovieRating(MovieRatingEntity movieRatingEntity) {
     MovieEntity movieEntity = movieRatingEntity.getMovie();
-    MovieDto movie = mapToUserMovie(movieEntity);
+    MovieDto movie = createUserMovie(movieEntity);
 
     return new UserMovieRatingOutDto(
         movie, movieRatingEntity.getRating(), movieRatingEntity.getDate());
   }
 
-  public List<MovieDto> mapToUserWatchlist(List<MovieEntity> watchlist) {
-    return watchlist.stream().map(this::mapToUserMovie).collect(Collectors.toList());
+  public List<MovieDto> createUserWatchlist(List<MovieEntity> watchlist) {
+    return watchlist.stream().map(this::createUserMovie).collect(Collectors.toList());
   }
 
-  private MovieDto mapToUserMovie(MovieEntity movieEntity) {
+  private MovieDto createUserMovie(MovieEntity movieEntity) {
     return new MovieDto(
         movieEntity.getId(),
         movieEntity.getName(),

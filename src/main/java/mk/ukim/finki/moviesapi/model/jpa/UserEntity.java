@@ -1,8 +1,11 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,6 +16,7 @@ import javax.persistence.Table;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -40,9 +44,13 @@ public class UserEntity implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<ReviewEntity> reviews;
 
+  @ElementCollection
+  @CollectionTable(name = "user_authority")
+  private Set<String> authorities;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
   }
 
   @Override

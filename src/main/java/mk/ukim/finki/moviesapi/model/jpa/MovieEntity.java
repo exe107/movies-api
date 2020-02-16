@@ -2,6 +2,7 @@ package mk.ukim.finki.moviesapi.model.jpa;
 
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -26,7 +27,9 @@ public class MovieEntity {
   private String name;
   private Integer year;
 
-  @ElementCollection private List<String> genres;
+  @ElementCollection
+  @CollectionTable(name = "movie_genre")
+  private List<String> genres;
 
   private String imageUrl;
 

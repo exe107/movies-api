@@ -1,11 +1,10 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import mk.ukim.finki.moviesapi.mapper.MoviesMapper;
+import javax.persistence.EntityNotFoundException;
+import mk.ukim.finki.moviesapi.factory.MovieFactory;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingKey;
@@ -22,7 +21,7 @@ public class MoviesServiceImpl implements MoviesService {
   private MovieRepository movieRepository;
   private MovieRatingRepository movieRatingRepository;
   private UsersService usersService;
-  private MoviesMapper moviesMapper;
+  private MovieFactory movieFactory;
 
   /**
    * Constructor.
@@ -30,18 +29,18 @@ public class MoviesServiceImpl implements MoviesService {
    * @param movieRepository {@link MovieRepository}
    * @param movieRatingRepository {@link MovieRatingRepository}
    * @param usersService {@link UsersService}
-   * @param moviesMapper {@link MoviesMapper}
+   * @param movieFactory {@link MovieFactory}
    */
   public MoviesServiceImpl(
       MovieRepository movieRepository,
       MovieRatingRepository movieRatingRepository,
       UsersService usersService,
-      MoviesMapper moviesMapper) {
+      MovieFactory movieFactory) {
 
     this.movieRepository = movieRepository;
     this.movieRatingRepository = movieRatingRepository;
     this.usersService = usersService;
-    this.moviesMapper = moviesMapper;
+    this.movieFactory = movieFactory;
   }
 
   @Override
@@ -55,7 +54,7 @@ public class MoviesServiceImpl implements MoviesService {
     Optional<MovieEntity> existingMovieEntity = movieRepository.findById(movie.getId());
 
     if (!existingMovieEntity.isPresent()) {
-      MovieEntity movieEntity = moviesMapper.mapToMovieEntity(movie);
+      MovieEntity movieEntity = movieFactory.mapToMovieEntity(movie);
       saveMovie(movieEntity);
     }
   }
@@ -76,16 +75,9 @@ public class MoviesServiceImpl implements MoviesService {
     UserEntity user = usersService.getUser(username);
     movieRating.setUser(user);
 
-    Optional<MovieEntity> movie = movieRepository.findById(movieId);
-    movieRating.setMovie(movie.get());
+    MovieEntity movie = movieRepository.findById(movieId).orElseThrow(EntityNotFoundException::new);
+    movieRating.setMovie(movie);
     movieRatingRepository.save(movieRating);
-  }
-
-  @Override
-  public List<UserMovieRatingOutDto> getUserRatedMovies(String username) {
-    List<MovieRatingEntity> movieRatings = movieRatingRepository.findAllByUserUsername(username);
-
-    return moviesMapper.mapToUserMovieRatings(movieRatings);
   }
 
   @Override
@@ -96,18 +88,17 @@ public class MoviesServiceImpl implements MoviesService {
   @Override
   public void addMovieToWatchlist(String username, String movieId) {
     UserEntity user = usersService.getUser(username);
-    Optional<MovieEntity> movieEntity = movieRepository.findById(movieId);
-    user.addMovieToWatchlist(movieEntity.get());
 
+    MovieEntity movie = movieRepository.findById(movieId).orElseThrow(EntityNotFoundException::new);
+    user.addMovieToWatchlist(movie);
     usersService.saveUser(user);
   }
 
   @Override
   public void removeMovieFromWatchlist(String username, String movieId) {
     UserEntity user = usersService.getUser(username);
-    Optional<MovieEntity> movieEntity = movieRepository.findById(movieId);
-    user.removeMovieFromWatchlist(movieEntity.get());
-
+    MovieEntity movie = movieRepository.findById(movieId).orElseThrow(EntityNotFoundException::new);
+    user.removeMovieFromWatchlist(movie);
     usersService.saveUser(user);
   }
 }

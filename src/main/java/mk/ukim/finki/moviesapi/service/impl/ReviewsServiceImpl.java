@@ -1,11 +1,12 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import mk.ukim.finki.moviesapi.mapper.ReviewsMapper;
-import mk.ukim.finki.moviesapi.model.dto.ApprovedReviewOutDto;
-import mk.ukim.finki.moviesapi.model.dto.PendingReviewOutDto;
+import java.util.stream.Collectors;
+import mk.ukim.finki.moviesapi.factory.ReviewFactory;
+import mk.ukim.finki.moviesapi.model.dto.ReviewOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.ReviewEntity;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
@@ -21,7 +22,7 @@ public class ReviewsServiceImpl implements ReviewsService {
   private UsersService usersService;
   private MoviesService moviesService;
   private ReviewRepository reviewRepository;
-  private ReviewsMapper reviewsMapper;
+  private ReviewFactory reviewFactory;
 
   /**
    * Constructor.
@@ -29,33 +30,37 @@ public class ReviewsServiceImpl implements ReviewsService {
    * @param usersService {@link UsersService}
    * @param moviesService {@link MoviesService}
    * @param reviewRepository {@link ReviewRepository}
-   * @param reviewsMapper {@link ReviewsMapper}
+   * @param reviewFactory {@link ReviewFactory}
    */
   public ReviewsServiceImpl(
       UsersService usersService,
       MoviesService moviesService,
       ReviewRepository reviewRepository,
-      ReviewsMapper reviewsMapper) {
+      ReviewFactory reviewFactory) {
 
     this.usersService = usersService;
     this.moviesService = moviesService;
     this.reviewRepository = reviewRepository;
-    this.reviewsMapper = reviewsMapper;
+    this.reviewFactory = reviewFactory;
   }
 
   @Override
-  public List<ApprovedReviewOutDto> getMovieReviews(String movieId) {
+  public List<ReviewOutDto> getMovieReviews(String movieId) {
     MovieEntity movieEntity = moviesService.getMovie(movieId);
 
     if (movieEntity == null) {
       return Collections.emptyList();
     }
 
-    return reviewsMapper.mapToApprovedReviews(movieEntity.getReviews());
+    return movieEntity.getReviews().stream()
+        .filter(ReviewEntity::isApproved)
+        .map(reviewFactory::createReviewOutDto)
+        .sorted(Comparator.comparing(ReviewOutDto::getDate).reversed())
+        .collect(Collectors.toList());
   }
 
   @Override
-  public PendingReviewOutDto addReview(String movieId, String username, String review) {
+  public ReviewOutDto addReview(String movieId, String username, String review) {
 
     MovieEntity movieEntity = moviesService.getMovie(movieId);
     UserEntity user = usersService.getUser(username);
@@ -67,11 +72,23 @@ public class ReviewsServiceImpl implements ReviewsService {
     reviewEntity.setApproved(false);
     reviewRepository.save(reviewEntity);
 
-    return reviewsMapper.mapToPendingReview(reviewEntity);
+    return reviewFactory.createReviewOutDto(reviewEntity);
   }
 
   @Override
-  public void deleteReview(Long reviewId) {
-    reviewRepository.deleteById(reviewId);
+  public void approveReview(String username, String movieId) {
+    ReviewEntity reviewEntity = reviewRepository.findByUserUsernameAndMovieId(username, movieId);
+    reviewEntity.setApproved(true);
+    reviewRepository.save(reviewEntity);
+  }
+
+  @Override
+  public void deleteReview(String username, String movieId) {
+    reviewRepository.deleteByUserUsernameAndMovieId(username, movieId);
+  }
+
+  @Override
+  public List<ReviewEntity> getAllPendingReviews() {
+    return reviewRepository.findAllByApprovedFalse();
   }
 }
