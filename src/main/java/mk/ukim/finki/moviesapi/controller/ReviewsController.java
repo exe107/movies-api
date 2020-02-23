@@ -32,7 +32,9 @@ public class ReviewsController {
   }
 
   /**
-   * Adds a review to be approved by an administrator.
+   * Adds a review for the given movie id. If the currently authenticated user is an administrator
+   * the review is automatically approved. Otherwise it is added in a pending state waiting to be
+   * approved by an administrator.
    *
    * @param review the review's details
    * @param authentication the authentication object

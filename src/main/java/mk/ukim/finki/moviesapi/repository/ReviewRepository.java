@@ -7,10 +7,10 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ReviewRepository extends CrudRepository<ReviewEntity, Long> {
 
+  List<ReviewEntity> findAllByApprovedFalse();
+
   ReviewEntity findByUserUsernameAndMovieId(String username, String movieId);
 
   @Transactional
   void deleteByUserUsernameAndMovieId(String username, String movieId);
-
-  List<ReviewEntity> findAllByApprovedFalse();
 }

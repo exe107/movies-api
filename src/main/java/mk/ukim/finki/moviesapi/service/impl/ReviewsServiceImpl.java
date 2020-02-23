@@ -69,7 +69,7 @@ public class ReviewsServiceImpl implements ReviewsService {
     reviewEntity.setMovie(movieEntity);
     reviewEntity.setUser(user);
     reviewEntity.setDate(new Date());
-    reviewEntity.setApproved(false);
+    reviewEntity.setApproved(user.isAdmin());
     reviewRepository.save(reviewEntity);
 
     return reviewFactory.createReviewOutDto(reviewEntity);

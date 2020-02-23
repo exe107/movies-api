@@ -53,12 +53,8 @@ public class UserFactory {
 
     List<MovieDto> watchList = movieFactory.createUserWatchlist(userEntity.getWatchlist());
 
-    boolean isAdmin =
-        userEntity.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .anyMatch(authority -> authority.equals(ROLE_ADMIN));
-
     List<ReviewOutDto> pendingReviews;
+    boolean isAdmin = userEntity.isAdmin();
 
     if (isAdmin) {
       pendingReviews =

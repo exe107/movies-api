@@ -1,5 +1,7 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
+import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_ADMIN;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +83,10 @@ public class UserEntity implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public boolean isAdmin() {
+    return authorities.stream().anyMatch(authority -> authority.equals(ROLE_ADMIN));
   }
 
   public String getName() {
