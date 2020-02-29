@@ -1,5 +1,6 @@
 package mk.ukim.finki.moviesapi.controller;
 
+import java.io.IOException;
 import mk.ukim.finki.moviesapi.model.dto.InitializationDataDto;
 import mk.ukim.finki.moviesapi.service.InitializationDataService;
 import org.springframework.security.core.Authentication;
@@ -25,14 +26,8 @@ public class InitializationDataController {
    */
   @GetMapping("initialization")
   public InitializationDataDto initialization(
-      @AuthenticationPrincipal Authentication authentication) {
+      @AuthenticationPrincipal Authentication authentication) throws IOException {
 
-    if (authentication == null) {
-      return new InitializationDataDto();
-    }
-
-    String username = (String) authentication.getPrincipal();
-
-    return initializationDataService.createInitializationData(username);
+    return initializationDataService.createInitializationData(authentication);
   }
 }

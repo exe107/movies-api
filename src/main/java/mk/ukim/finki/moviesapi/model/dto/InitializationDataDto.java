@@ -1,5 +1,6 @@
 package mk.ukim.finki.moviesapi.model.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class InitializationDataDto {
 
   private UserDto user;
+  private List<String> movieIdsForToday;
 }
