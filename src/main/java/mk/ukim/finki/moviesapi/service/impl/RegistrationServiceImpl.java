@@ -51,17 +51,7 @@ public class RegistrationServiceImpl implements RegistrationService {
       throw new UsernameAlreadyExistsException();
     }
 
-    UserEntity user = new UserEntity();
-    user.setName(registrationDetails.getName());
-    user.setSurname(registrationDetails.getSurname());
-    user.setUsername(registrationDetails.getUsername());
-    user.setPassword(passwordEncoder.encode(registrationDetails.getPassword()));
-    user.setRatedMovies(Collections.emptyList());
-    user.setWatchlist(Collections.emptyList());
-    user.setReviews(Collections.emptyList());
-
-    Set<String> authorities = new HashSet<>(Collections.singletonList(ROLE_USER));
-    user.setAuthorities(authorities);
+    UserEntity user = userFactory.createUserEntity(registrationDetails);
     usersService.saveUser(user);
   }
 

@@ -1,10 +1,14 @@
 package mk.ukim.finki.moviesapi.factory;
 
-import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_ADMIN;
+import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_USER;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
 import mk.ukim.finki.moviesapi.model.dto.ReviewOutDto;
 import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
@@ -12,7 +16,7 @@ import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetailsDto;
 import mk.ukim.finki.moviesapi.model.jpa.ReviewEntity;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.service.ReviewsService;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +25,7 @@ public class UserFactory {
   private ReviewsService reviewsService;
   private MovieFactory movieFactory;
   private ReviewFactory reviewFactory;
+  private PasswordEncoder passwordEncoder;
 
   /**
    * Constructor.
@@ -28,13 +33,18 @@ public class UserFactory {
    * @param reviewsService reviews service
    * @param movieFactory movie factory
    * @param reviewFactory review factory
+   * @param passwordEncoder the password encoder
    */
   public UserFactory(
-      ReviewsService reviewsService, MovieFactory movieFactory, ReviewFactory reviewFactory) {
+      ReviewsService reviewsService,
+      MovieFactory movieFactory,
+      ReviewFactory reviewFactory,
+      PasswordEncoder passwordEncoder) {
 
     this.reviewsService = reviewsService;
     this.movieFactory = movieFactory;
     this.reviewFactory = reviewFactory;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**
@@ -76,5 +86,28 @@ public class UserFactory {
         movieRatings,
         watchList,
         pendingReviews);
+  }
+
+  /**
+   * Creates a {@link UserEntity} from {@link RegistrationDetailsDto}.
+   *
+   * @param registrationDetails the registration details
+   */
+  public UserEntity createUserEntity(RegistrationDetailsDto registrationDetails) {
+
+    UserEntity user = new UserEntity();
+    user.setName(registrationDetails.getName());
+    user.setSurname(registrationDetails.getSurname());
+    user.setEmail(registrationDetails.getEmail());
+    user.setUsername(registrationDetails.getUsername());
+    user.setPassword(passwordEncoder.encode(registrationDetails.getPassword()));
+    user.setRatedMovies(Collections.emptyList());
+    user.setWatchlist(Collections.emptyList());
+    user.setReviews(Collections.emptyList());
+
+    Set<String> authorities = new HashSet<>(Collections.singletonList(ROLE_USER));
+    user.setAuthorities(authorities);
+
+    return user;
   }
 }

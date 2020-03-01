@@ -8,11 +8,13 @@ public interface ReviewsService {
 
   List<ReviewOutDto> getMovieReviews(String movieId);
 
+  List<ReviewEntity> getAllPendingReviews();
+
   ReviewOutDto addReview(String movieId, String username, String review);
 
-  void approveReview(String username, String movieId);
+  void approveReview(String adminUsername, String reviewUsername, String movieId);
 
   void deleteReview(String username, String movieId);
 
-  List<ReviewEntity> getAllPendingReviews();
+  void rejectReview(String adminUsername, String reviewUsername, String movieId);
 }

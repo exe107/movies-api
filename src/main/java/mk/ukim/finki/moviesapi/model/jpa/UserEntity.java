@@ -32,6 +32,7 @@ public class UserEntity implements UserDetails {
   private String name;
   private String surname;
   private String password;
+  private String email;
 
   @OneToMany(mappedBy = "user")
   private List<MovieRatingEntity> ratedMovies;
@@ -95,6 +96,10 @@ public class UserEntity implements UserDetails {
 
   public String getSurname() {
     return surname;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public List<MovieRatingEntity> getRatedMovies() {
