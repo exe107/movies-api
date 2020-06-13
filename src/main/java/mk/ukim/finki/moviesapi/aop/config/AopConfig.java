@@ -11,7 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AopConfig {
 
   @Bean
-  public MoviesAspect moviesAdvice(MoviesService moviesService) {
+  public MoviesAspect moviesAspect(MoviesService moviesService) {
     return new MoviesAspect(moviesService);
   }
 }

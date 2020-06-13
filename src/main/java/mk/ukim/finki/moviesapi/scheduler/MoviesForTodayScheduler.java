@@ -18,9 +18,7 @@ import mk.ukim.finki.moviesapi.repository.MovieOfTheDayRepository;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
-@Component
 public class MoviesForTodayScheduler {
 
   private MovieOfTheDayRepository movieOfTheDayRepository;
