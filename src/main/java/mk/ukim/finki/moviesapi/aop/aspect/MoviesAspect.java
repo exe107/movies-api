@@ -1,4 +1,4 @@
-package mk.ukim.finki.moviesapi.aop;
+package mk.ukim.finki.moviesapi.aop.aspect;
 
 import mk.ukim.finki.moviesapi.model.dto.MovieDetailsDto;
 import mk.ukim.finki.moviesapi.model.dto.MovieDto;
@@ -20,8 +20,8 @@ public class MoviesAspect {
     moviesService.saveMovie(movieDetails.getMovie());
   }
 
-  @Before("execution(* mk.ukim.finki.moviesapi.controller.*.*(..))" + " && args(movieDto, ..)")
-  public void saveMovieInDatabase(MovieDto movieDto) {
-    moviesService.saveMovie(movieDto);
+  @Before("execution(* mk.ukim.finki.moviesapi.controller.*.*(..))" + " && args(movie, ..)")
+  public void saveMovieInDatabase(MovieDto movie) {
+    moviesService.saveMovie(movie);
   }
 }

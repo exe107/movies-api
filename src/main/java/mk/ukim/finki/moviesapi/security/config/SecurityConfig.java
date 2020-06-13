@@ -1,4 +1,4 @@
-package mk.ukim.finki.moviesapi.config;
+package mk.ukim.finki.moviesapi.security.config;
 
 import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_ADMIN;
 import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_USER;
