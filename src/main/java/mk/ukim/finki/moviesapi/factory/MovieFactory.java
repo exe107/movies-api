@@ -3,10 +3,10 @@ package mk.ukim.finki.moviesapi.factory;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import mk.ukim.finki.moviesapi.model.dto.MovieDto;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieRatingEntity;
+import mk.ukim.finki.moviesapi.model.rest.MovieDto;
+import mk.ukim.finki.moviesapi.model.rest.UserMovieRatingOutDto;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
 package mk.ukim.finki.moviesapi.aop.aspect;
 
-import mk.ukim.finki.moviesapi.model.dto.MovieDetailsDto;
-import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.rest.MovieDetailsDto;
+import mk.ukim.finki.moviesapi.model.rest.MovieDto;
 import mk.ukim.finki.moviesapi.service.MoviesService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -2,10 +2,10 @@ package mk.ukim.finki.moviesapi.service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
-import mk.ukim.finki.moviesapi.model.dto.PasswordChangeDto;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
-import mk.ukim.finki.moviesapi.model.dto.UserDto;
+import mk.ukim.finki.moviesapi.model.rest.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.rest.PasswordChangeDto;
+import mk.ukim.finki.moviesapi.model.rest.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.rest.UserDto;
 
 public interface RegistrationService {
 

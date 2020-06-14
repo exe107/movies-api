@@ -1,21 +1,15 @@
 package mk.ukim.finki.moviesapi.service.impl;
 
-import static mk.ukim.finki.moviesapi.security.constants.SecurityConstants.ROLE_USER;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mk.ukim.finki.moviesapi.exception.PasswordMismatchException;
 import mk.ukim.finki.moviesapi.exception.UsernameAlreadyExistsException;
 import mk.ukim.finki.moviesapi.factory.UserFactory;
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
-import mk.ukim.finki.moviesapi.model.dto.PasswordChangeDto;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
-import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
+import mk.ukim.finki.moviesapi.model.rest.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.rest.PasswordChangeDto;
+import mk.ukim.finki.moviesapi.model.rest.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.rest.UserDto;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.security.crypto.password.PasswordEncoder;

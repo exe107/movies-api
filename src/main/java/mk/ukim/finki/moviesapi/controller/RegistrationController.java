@@ -3,11 +3,11 @@ package mk.ukim.finki.moviesapi.controller;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import mk.ukim.finki.moviesapi.model.dto.LoginCredentialsDto;
-import mk.ukim.finki.moviesapi.model.dto.PasswordChangeDto;
-import mk.ukim.finki.moviesapi.model.dto.RegistrationDetailsDto;
-import mk.ukim.finki.moviesapi.model.dto.UserDto;
-import mk.ukim.finki.moviesapi.model.dto.UserPersonalDetailsDto;
+import mk.ukim.finki.moviesapi.model.rest.LoginCredentialsDto;
+import mk.ukim.finki.moviesapi.model.rest.PasswordChangeDto;
+import mk.ukim.finki.moviesapi.model.rest.RegistrationDetailsDto;
+import mk.ukim.finki.moviesapi.model.rest.UserDto;
+import mk.ukim.finki.moviesapi.model.rest.UserPersonalDetailsDto;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 
 import org.springframework.http.HttpStatus;

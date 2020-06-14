@@ -1,4 +1,4 @@
-package mk.ukim.finki.moviesapi.model.dto;
+package mk.ukim.finki.moviesapi.model.rest;
 
 import java.math.BigDecimal;
 import java.util.List;

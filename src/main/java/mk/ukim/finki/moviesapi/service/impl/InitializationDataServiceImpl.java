@@ -2,9 +2,9 @@ package mk.ukim.finki.moviesapi.service.impl;
 
 import java.util.List;
 import mk.ukim.finki.moviesapi.factory.UserFactory;
-import mk.ukim.finki.moviesapi.model.dto.InitializationDataDto;
-import mk.ukim.finki.moviesapi.model.dto.UserDto;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
+import mk.ukim.finki.moviesapi.model.rest.InitializationDataDto;
+import mk.ukim.finki.moviesapi.model.rest.UserDto;
 import mk.ukim.finki.moviesapi.service.InitializationDataService;
 import mk.ukim.finki.moviesapi.service.MoviesOfTheDayService;
 import mk.ukim.finki.moviesapi.service.UsersService;

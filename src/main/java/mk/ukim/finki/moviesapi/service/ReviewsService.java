@@ -1,8 +1,8 @@
 package mk.ukim.finki.moviesapi.service;
 
 import java.util.List;
-import mk.ukim.finki.moviesapi.model.dto.ReviewOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.ReviewEntity;
+import mk.ukim.finki.moviesapi.model.rest.ReviewOutDto;
 
 public interface ReviewsService {
 

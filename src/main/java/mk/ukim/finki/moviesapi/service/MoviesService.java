@@ -1,7 +1,7 @@
 package mk.ukim.finki.moviesapi.service;
 
-import mk.ukim.finki.moviesapi.model.dto.MovieDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
+import mk.ukim.finki.moviesapi.model.rest.MovieDto;
 
 public interface MoviesService {
 

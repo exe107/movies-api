@@ -1,10 +1,10 @@
 package mk.ukim.finki.moviesapi.controller;
 
 import java.util.List;
-import mk.ukim.finki.moviesapi.model.dto.MovieDto;
-import mk.ukim.finki.moviesapi.model.dto.ReviewInDto;
-import mk.ukim.finki.moviesapi.model.dto.ReviewOutDto;
-import mk.ukim.finki.moviesapi.model.dto.UserMovieIdentifierDto;
+import mk.ukim.finki.moviesapi.model.rest.MovieDto;
+import mk.ukim.finki.moviesapi.model.rest.ReviewInDto;
+import mk.ukim.finki.moviesapi.model.rest.ReviewOutDto;
+import mk.ukim.finki.moviesapi.model.rest.UserMovieIdentifierDto;
 import mk.ukim.finki.moviesapi.service.ReviewsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

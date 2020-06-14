@@ -1,12 +1,12 @@
 package mk.ukim.finki.moviesapi.factory;
 
-import mk.ukim.finki.moviesapi.model.dto.MailCredentialsDto;
-import mk.ukim.finki.moviesapi.model.dto.MailDto;
-import mk.ukim.finki.moviesapi.model.dto.MimeType;
-import mk.ukim.finki.moviesapi.model.dto.ReviewOutDto;
 import mk.ukim.finki.moviesapi.model.jpa.MovieEntity;
 import mk.ukim.finki.moviesapi.model.jpa.ReviewEntity;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
+import mk.ukim.finki.moviesapi.model.mail.MailCredentialsDto;
+import mk.ukim.finki.moviesapi.model.mail.MailDto;
+import mk.ukim.finki.moviesapi.model.mail.MimeType;
+import mk.ukim.finki.moviesapi.model.rest.ReviewOutDto;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

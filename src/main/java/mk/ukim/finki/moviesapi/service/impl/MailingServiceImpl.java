@@ -10,9 +10,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import mk.ukim.finki.moviesapi.model.dto.MailCredentialsDto;
-import mk.ukim.finki.moviesapi.model.dto.MailDto;
-import mk.ukim.finki.moviesapi.model.dto.MimeType;
+import mk.ukim.finki.moviesapi.model.mail.MailCredentialsDto;
+import mk.ukim.finki.moviesapi.model.mail.MailDto;
+import mk.ukim.finki.moviesapi.model.mail.MimeType;
 import mk.ukim.finki.moviesapi.service.MailingService;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.controller;
 
-import mk.ukim.finki.moviesapi.model.dto.MovieDto;
+import mk.ukim.finki.moviesapi.model.rest.MovieDto;
 import mk.ukim.finki.moviesapi.service.MoviesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

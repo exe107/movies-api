@@ -1,7 +1,7 @@
 package mk.ukim.finki.moviesapi.service;
 
 import javax.mail.MessagingException;
-import mk.ukim.finki.moviesapi.model.dto.MailDto;
+import mk.ukim.finki.moviesapi.model.mail.MailDto;
 
 public interface MailingService {
 
