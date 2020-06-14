@@ -6,5 +6,5 @@ public interface UsersService {
 
   UserEntity getUser(String username);
 
-  UserEntity saveUser(UserEntity user);
+  void saveUser(UserEntity user);
 }

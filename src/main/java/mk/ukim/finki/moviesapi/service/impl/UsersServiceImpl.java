@@ -20,7 +20,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public UserEntity saveUser(UserEntity user) {
-    return userRepository.save(user);
+  public void saveUser(UserEntity user) {
+    userRepository.save(user);
   }
 }
