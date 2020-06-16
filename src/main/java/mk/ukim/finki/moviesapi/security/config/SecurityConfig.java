@@ -7,6 +7,7 @@ import mk.ukim.finki.moviesapi.security.provider.UserDetailsAuthenticationProvid
 import mk.ukim.finki.moviesapi.security.service.UserDetailsServiceImpl;
 import mk.ukim.finki.moviesapi.service.UsersService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -85,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authenticated()
         .mvcMatchers("**/watchlist/**")
         .hasAuthority(ROLE_USER)
-        .mvcMatchers("reviews/{movieId:tt[0-9]+}")
+        .mvcMatchers(HttpMethod.GET, "reviews/{movieId:tt[0-9]+}")
         .permitAll()
         .mvcMatchers("reviews/approve", "reviews/reject")
         .hasAuthority(ROLE_ADMIN)
