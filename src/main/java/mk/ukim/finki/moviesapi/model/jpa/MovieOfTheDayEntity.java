@@ -1,7 +1,7 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +16,5 @@ import lombok.Setter;
 @Getter
 public class MovieOfTheDayEntity {
 
-  @Id private String imdbId;
-  private boolean chosen;
+  @EmbeddedId private MovieOfTheDayKey id;
 }

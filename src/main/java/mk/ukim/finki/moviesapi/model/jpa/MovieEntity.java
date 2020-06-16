@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,10 @@ public class MovieEntity {
   private Integer year;
 
   @ElementCollection
-  @CollectionTable(name = "movie_genre")
+  @CollectionTable(
+      name = "movie_genre",
+      joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"))
+  @Column(name = "genre")
   private List<String> genres;
 
   private String imageUrl;

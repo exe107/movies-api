@@ -1,6 +1,6 @@
 package mk.ukim.finki.moviesapi.scheduler.config;
 
-import mk.ukim.finki.moviesapi.repository.DayRepository;
+import mk.ukim.finki.moviesapi.repository.CandidateMovieOfTheDayRepository;
 import mk.ukim.finki.moviesapi.repository.MovieOfTheDayRepository;
 import mk.ukim.finki.moviesapi.scheduler.MoviesForTodayScheduler;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,9 @@ public class SchedulerConfig {
 
   @Bean
   public MoviesForTodayScheduler moviesForTodayScheduler(
-      MovieOfTheDayRepository movieOfTheDayRepository, DayRepository dayRepository) {
+      CandidateMovieOfTheDayRepository candidateMovieOfTheDayRepository,
+      MovieOfTheDayRepository movieOfTheDayRepository) {
 
-    return new MoviesForTodayScheduler(movieOfTheDayRepository, dayRepository);
+    return new MoviesForTodayScheduler(candidateMovieOfTheDayRepository, movieOfTheDayRepository);
   }
 }

@@ -7,13 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import mk.ukim.finki.moviesapi.model.jpa.DayEntity;
+import mk.ukim.finki.moviesapi.model.jpa.CandidateMovieOfTheDayEntity;
 import mk.ukim.finki.moviesapi.model.jpa.MovieOfTheDayEntity;
-import mk.ukim.finki.moviesapi.repository.DayRepository;
+import mk.ukim.finki.moviesapi.model.jpa.MovieOfTheDayKey;
+import mk.ukim.finki.moviesapi.repository.CandidateMovieOfTheDayRepository;
 import mk.ukim.finki.moviesapi.repository.MovieOfTheDayRepository;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -21,59 +21,64 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 public class MoviesForTodayScheduler {
 
+  private CandidateMovieOfTheDayRepository candidateMovieOfTheDayRepository;
   private MovieOfTheDayRepository movieOfTheDayRepository;
-  private DayRepository dayRepository;
 
   /**
    * Constructor.
    *
+   * @param candidateMovieOfTheDayRepository {@link CandidateMovieOfTheDayRepository}
    * @param movieOfTheDayRepository {@link MovieOfTheDayRepository}
-   * @param dayRepository {@link DayRepository}
    */
   public MoviesForTodayScheduler(
-      MovieOfTheDayRepository movieOfTheDayRepository, DayRepository dayRepository) {
+      CandidateMovieOfTheDayRepository candidateMovieOfTheDayRepository,
+      MovieOfTheDayRepository movieOfTheDayRepository) {
 
+    this.candidateMovieOfTheDayRepository = candidateMovieOfTheDayRepository;
     this.movieOfTheDayRepository = movieOfTheDayRepository;
-    this.dayRepository = dayRepository;
   }
 
   /**
-   * Fills the {@link MovieOfTheDayEntity} table if needed and runs the generation of movies for
-   * today if that isn't already done.
+   * Fills the {@link CandidateMovieOfTheDayEntity} table if needed and runs the generation of
+   * movies for today if that isn't already done.
    *
    * @throws IOException exception while reading all the movie ids from the .csv file
    */
   @PostConstruct
   public void runGenerationOfMoviesIfNeeded() throws IOException {
-    if (movieOfTheDayRepository.count() == 0) {
+    if (candidateMovieOfTheDayRepository.count() == 0) {
       initializeMoviesOfTheDayTable();
     }
 
     String currentDate = new SimpleDateFormat("dd-MM-YYYY").format(new Date());
-    Optional<DayEntity> existingDay = dayRepository.findById(currentDate);
+    List<MovieOfTheDayEntity> moviesOfTheDay = movieOfTheDayRepository.findAllByDate(currentDate);
 
-    if (!existingDay.isPresent()) {
+    if (moviesOfTheDay.isEmpty()) {
       generateMoviesForTodayTask();
     }
   }
 
   @Scheduled(cron = "0 0 0 * * *")
   private void generateMoviesForTodayTask() {
-    List<MovieOfTheDayEntity> moviesForToday = chooseRandomMoviesForToday();
+    List<CandidateMovieOfTheDayEntity> moviesForToday = chooseRandomMoviesForToday();
     moviesForToday.forEach(movie -> movie.setChosen(true));
-    movieOfTheDayRepository.saveAll(moviesForToday);
-
-    List<String> movieIdsForToday =
-        moviesForToday.stream().map(MovieOfTheDayEntity::getImdbId).collect(Collectors.toList());
+    candidateMovieOfTheDayRepository.saveAll(moviesForToday);
 
     String currentDate = new SimpleDateFormat("dd-MM-YYYY").format(new Date());
-    DayEntity dayEntity = new DayEntity(currentDate, movieIdsForToday);
-    dayRepository.save(dayEntity);
+
+    List<MovieOfTheDayEntity> moviesOfTheDay =
+        moviesForToday.stream()
+            .map(CandidateMovieOfTheDayEntity::getImdbId)
+            .map(imdbId -> new MovieOfTheDayKey(currentDate, imdbId))
+            .map(MovieOfTheDayEntity::new)
+            .collect(Collectors.toList());
+
+    movieOfTheDayRepository.saveAll(moviesOfTheDay);
   }
 
   private void initializeMoviesOfTheDayTable() throws IOException {
 
-    List<MovieOfTheDayEntity> moviesOfTheDay = new ArrayList<>();
+    List<CandidateMovieOfTheDayEntity> moviesOfTheDay = new ArrayList<>();
     String imdbId;
 
     Resource resource = new ClassPathResource("movie_ids.csv");
@@ -82,22 +87,26 @@ public class MoviesForTodayScheduler {
 
     while ((imdbId = bufferedReader.readLine()) != null) {
       if (imdbId.startsWith("tt")) {
-        MovieOfTheDayEntity movieOfTheDayEntity = new MovieOfTheDayEntity(imdbId, false);
-        moviesOfTheDay.add(movieOfTheDayEntity);
+        CandidateMovieOfTheDayEntity candidateMovieOfTheDayEntity =
+            new CandidateMovieOfTheDayEntity(imdbId, false);
+
+        moviesOfTheDay.add(candidateMovieOfTheDayEntity);
       }
     }
 
     bufferedReader.close();
-    movieOfTheDayRepository.saveAll(moviesOfTheDay);
+    candidateMovieOfTheDayRepository.saveAll(moviesOfTheDay);
   }
 
-  private List<MovieOfTheDayEntity> chooseRandomMoviesForToday() {
-    List<MovieOfTheDayEntity> moviesLeft = movieOfTheDayRepository.findAllByChosenFalse();
+  private List<CandidateMovieOfTheDayEntity> chooseRandomMoviesForToday() {
+    List<CandidateMovieOfTheDayEntity> moviesLeft =
+        candidateMovieOfTheDayRepository.findAllByChosenFalse();
+
     int randomMoviesPerDay = 3;
 
-    if (moviesLeft.size() <= randomMoviesPerDay) {
-      movieOfTheDayRepository.reset();
-      moviesLeft = movieOfTheDayRepository.findAllByChosenFalse();
+    if (moviesLeft.size() < randomMoviesPerDay) {
+      candidateMovieOfTheDayRepository.reset();
+      moviesLeft = candidateMovieOfTheDayRepository.findAllByChosenFalse();
     }
 
     List<Integer> movieIndicesForToday = new ArrayList<>();

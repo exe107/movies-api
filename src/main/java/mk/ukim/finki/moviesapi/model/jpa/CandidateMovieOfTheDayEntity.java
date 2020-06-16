@@ -1,8 +1,5 @@
 package mk.ukim.finki.moviesapi.model.jpa;
 
-import java.util.List;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,16 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "day")
+@Table(name = "candidate_movie_of_the_day")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
-public class DayEntity {
+@Getter
+public class CandidateMovieOfTheDayEntity {
 
-  @Id private String date;
-
-  @ElementCollection
-  @CollectionTable(name = "day_movie")
-  private List<String> movieIds;
+  @Id private String imdbId;
+  private boolean chosen;
 }

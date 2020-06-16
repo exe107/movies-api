@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -48,7 +49,10 @@ public class UserEntity implements UserDetails {
   private List<ReviewEntity> reviews;
 
   @ElementCollection
-  @CollectionTable(name = "user_authority")
+  @CollectionTable(
+      name = "user_authority",
+      joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"))
+  @Column(name = "authority")
   private Set<String> authorities;
 
   @Override
