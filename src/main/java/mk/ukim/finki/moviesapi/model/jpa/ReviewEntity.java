@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -23,7 +24,8 @@ public class ReviewEntity {
   private Long id;
 
   private Date date;
-  private String review;
+
+  @Lob private String review;
   private boolean approved;
 
   @ManyToOne private UserEntity user;
