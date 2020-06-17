@@ -8,12 +8,13 @@ import mk.ukim.finki.moviesapi.model.mail.MailDto;
 import mk.ukim.finki.moviesapi.model.mail.MimeType;
 import mk.ukim.finki.moviesapi.model.rest.ReviewOutDto;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
 public class ReviewFactory {
 
   private String reviewMailSubject = "Movie review";
+  private String email = "testdiplomsk@gmail.com";
+  private String password = "Diplomsk@240";
 
   /**
    * Creates a {@link ReviewOutDto} from {@link ReviewEntity}.
@@ -36,17 +37,15 @@ public class ReviewFactory {
   /**
    * Creates an approval mail to be sent to the writer of the review.
    *
-   * @param administrator the administrator that approved the review
    * @param reviewEntity the review
    * @return {@link MailDto}
    */
-  public MailDto createApprovedReviewMail(UserEntity administrator, ReviewEntity reviewEntity) {
+  public MailDto createApprovedReviewMail(ReviewEntity reviewEntity) {
 
     UserEntity reviewWriter = reviewEntity.getUser();
     MovieEntity movie = reviewEntity.getMovie();
 
-    MailCredentialsDto sender =
-        new MailCredentialsDto(administrator.getEmail(), administrator.getPassword());
+    MailCredentialsDto sender = new MailCredentialsDto(email, password);
 
     String messageTemplate =
         "<p>Your review for the movie \"%s\" has been "
@@ -60,29 +59,19 @@ public class ReviewFactory {
   /**
    * Creates a rejection mail with the given reason (if any) to be sent to the writer of the review.
    *
-   * @param administrator the administrator that rejected the review
    * @param reviewEntity the review
-   * @param reason the reason for rejection
    * @return {@link MailDto}
    */
-  public MailDto createRejectedReviewMail(
-      UserEntity administrator, ReviewEntity reviewEntity, String reason) {
+  public MailDto createRejectedReviewMail(ReviewEntity reviewEntity) {
 
     UserEntity reviewWriter = reviewEntity.getUser();
     MovieEntity movie = reviewEntity.getMovie();
 
-    MailCredentialsDto sender =
-        new MailCredentialsDto(administrator.getEmail(), administrator.getPassword());
+    MailCredentialsDto sender = new MailCredentialsDto(email, password);
 
     String messageTemplate =
         "<p>Your review for the movie \"%s\" has been "
-            + "<span style=\"color: red\">rejected</span>";
-
-    if (!StringUtils.isEmpty(reason)) {
-      messageTemplate += " with the following reason:</p>\n" + reason;
-    } else {
-      messageTemplate += ".</p>";
-    }
+            + "<span style=\"color: red\">rejected</span>.</p>";
 
     String message = String.format(messageTemplate, movie.getName());
 

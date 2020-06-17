@@ -53,33 +53,25 @@ public class ReviewsController {
   /**
    * Approves the review written from the user specified in {@link UserMovieIdentifierDto}.
    *
-   * @param authentication the authentication object
    * @param identifier dto containing the movie and the user who wrote the review about it
    */
   @PostMapping("reviews/approve")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void approveReview(
-      @AuthenticationPrincipal Authentication authentication,
-      @RequestBody UserMovieIdentifierDto identifier) {
+  public void approveReview(@RequestBody UserMovieIdentifierDto identifier) {
 
-    String adminUsername = (String) authentication.getPrincipal();
-    reviewsService.approveReview(adminUsername, identifier.getUsername(), identifier.getMovieId());
+    reviewsService.approveReview(identifier.getUsername(), identifier.getMovieId());
   }
 
   /**
    * Rejects the review written from the user specified in {@link UserMovieIdentifierDto}.
    *
-   * @param authentication the authentication object
    * @param identifier dto containing the movie and the user who wrote the review about it
    */
   @PostMapping("reviews/reject")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void rejectReview(
-      @AuthenticationPrincipal Authentication authentication,
-      @RequestBody UserMovieIdentifierDto identifier) {
+  public void rejectReview(@RequestBody UserMovieIdentifierDto identifier) {
 
-    String adminUsername = (String) authentication.getPrincipal();
-    reviewsService.rejectReview(adminUsername, identifier.getUsername(), identifier.getMovieId());
+    reviewsService.rejectReview(identifier.getUsername(), identifier.getMovieId());
   }
 
   /**

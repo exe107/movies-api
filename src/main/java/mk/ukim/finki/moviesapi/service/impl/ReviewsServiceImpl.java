@@ -83,15 +83,14 @@ public class ReviewsServiceImpl implements ReviewsService {
   }
 
   @Override
-  public void approveReview(String adminUsername, String reviewUsername, String movieId) {
+  public void approveReview(String reviewUsername, String movieId) {
     ReviewEntity reviewEntity =
         reviewRepository.findByUserUsernameAndMovieId(reviewUsername, movieId);
 
     reviewEntity.setApproved(true);
     reviewRepository.save(reviewEntity);
 
-    UserEntity administrator = usersService.getUser(adminUsername);
-    MailDto mail = reviewFactory.createApprovedReviewMail(administrator, reviewEntity);
+    MailDto mail = reviewFactory.createApprovedReviewMail(reviewEntity);
 
     try {
       mailingService.sendMail(mail);
@@ -106,15 +105,13 @@ public class ReviewsServiceImpl implements ReviewsService {
   }
 
   @Override
-  public void rejectReview(String adminUsername, String reviewUsername, String movieId) {
+  public void rejectReview(String reviewUsername, String movieId) {
     ReviewEntity reviewEntity =
         reviewRepository.findByUserUsernameAndMovieId(reviewUsername, movieId);
 
     reviewRepository.delete(reviewEntity);
 
-    UserEntity administrator = usersService.getUser(adminUsername);
-    String reason = null; // TODO: 01.3.2020 send an optional reason for rejection from UI
-    MailDto mail = reviewFactory.createRejectedReviewMail(administrator, reviewEntity, reason);
+    MailDto mail = reviewFactory.createRejectedReviewMail(reviewEntity);
 
     try {
       mailingService.sendMail(mail);

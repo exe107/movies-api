@@ -12,9 +12,9 @@ public interface ReviewsService {
 
   ReviewOutDto addReview(String movieId, String username, String review);
 
-  void approveReview(String adminUsername, String reviewUsername, String movieId);
+  void approveReview(String username, String movieId);
 
   void deleteReview(String username, String movieId);
 
-  void rejectReview(String adminUsername, String reviewUsername, String movieId);
+  void rejectReview(String username, String movieId);
 }
