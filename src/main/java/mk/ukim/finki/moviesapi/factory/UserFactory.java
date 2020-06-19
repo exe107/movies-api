@@ -15,14 +15,14 @@ import mk.ukim.finki.moviesapi.model.rest.ReviewOutDto;
 import mk.ukim.finki.moviesapi.model.rest.UserDto;
 import mk.ukim.finki.moviesapi.model.rest.UserMovieRatingOutDto;
 import mk.ukim.finki.moviesapi.model.rest.UserPersonalDetailsDto;
-import mk.ukim.finki.moviesapi.service.ReviewsService;
+import mk.ukim.finki.moviesapi.repository.ReviewRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserFactory {
 
-  private ReviewsService reviewsService;
+  private ReviewRepository reviewRepository;
   private MovieFactory movieFactory;
   private ReviewFactory reviewFactory;
   private PasswordEncoder passwordEncoder;
@@ -30,18 +30,18 @@ public class UserFactory {
   /**
    * Constructor.
    *
-   * @param reviewsService reviews service
+   * @param reviewRepository the review repository
    * @param movieFactory movie factory
    * @param reviewFactory review factory
-   * @param passwordEncoder the password encoder
+   * @param passwordEncoder the Spring Security password encoder
    */
   public UserFactory(
-      ReviewsService reviewsService,
+      ReviewRepository reviewRepository,
       MovieFactory movieFactory,
       ReviewFactory reviewFactory,
       PasswordEncoder passwordEncoder) {
 
-    this.reviewsService = reviewsService;
+    this.reviewRepository = reviewRepository;
     this.movieFactory = movieFactory;
     this.reviewFactory = reviewFactory;
     this.passwordEncoder = passwordEncoder;
@@ -56,7 +56,8 @@ public class UserFactory {
   public UserDto createUserDto(UserEntity userEntity) {
 
     UserPersonalDetailsDto personalDetails =
-        new UserPersonalDetailsDto(userEntity.getName(), userEntity.getSurname());
+        new UserPersonalDetailsDto(
+            userEntity.getName(), userEntity.getSurname(), userEntity.getEmail());
 
     List<UserMovieRatingOutDto> movieRatings =
         movieFactory.createUserMovieRatings(userEntity.getRatedMovies());
@@ -68,7 +69,7 @@ public class UserFactory {
 
     if (isAdmin) {
       pendingReviews =
-          reviewsService.getAllPendingReviews().stream()
+          reviewRepository.findAllByApprovedFalse().stream()
               .map(reviewFactory::createReviewOutDto)
               .collect(Collectors.toList());
     } else {

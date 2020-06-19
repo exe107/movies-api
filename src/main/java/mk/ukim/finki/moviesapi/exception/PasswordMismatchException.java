@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
     value = HttpStatus.UNAUTHORIZED,
-    reason = "The provided password does not match the old one")
+    reason = "Incorrect old password")
 public class PasswordMismatchException extends RuntimeException {
 
 }

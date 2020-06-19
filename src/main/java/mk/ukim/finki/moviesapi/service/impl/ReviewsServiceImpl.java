@@ -119,9 +119,4 @@ public class ReviewsServiceImpl implements ReviewsService {
       e.printStackTrace();
     }
   }
-
-  @Override
-  public List<ReviewEntity> getAllPendingReviews() {
-    return reviewRepository.findAllByApprovedFalse();
-  }
 }

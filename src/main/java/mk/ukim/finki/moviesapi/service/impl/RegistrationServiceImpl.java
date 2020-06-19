@@ -2,38 +2,31 @@ package mk.ukim.finki.moviesapi.service.impl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mk.ukim.finki.moviesapi.exception.PasswordMismatchException;
 import mk.ukim.finki.moviesapi.exception.UsernameAlreadyExistsException;
 import mk.ukim.finki.moviesapi.factory.UserFactory;
 import mk.ukim.finki.moviesapi.model.jpa.UserEntity;
 import mk.ukim.finki.moviesapi.model.rest.LoginCredentialsDto;
-import mk.ukim.finki.moviesapi.model.rest.PasswordChangeDto;
 import mk.ukim.finki.moviesapi.model.rest.RegistrationDetailsDto;
 import mk.ukim.finki.moviesapi.model.rest.UserDto;
 import mk.ukim.finki.moviesapi.service.RegistrationService;
 import mk.ukim.finki.moviesapi.service.UsersService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
   private UsersService usersService;
-  private PasswordEncoder passwordEncoder;
   private UserFactory userFactory;
 
   /**
    * Constructor.
    *
    * @param usersService {@link UsersService}
-   * @param passwordEncoder {@link PasswordEncoder}
    * @param userFactory {@link UserFactory}
    */
-  public RegistrationServiceImpl(
-      UsersService usersService, PasswordEncoder passwordEncoder, UserFactory userFactory) {
+  public RegistrationServiceImpl(UsersService usersService, UserFactory userFactory) {
 
     this.usersService = usersService;
-    this.passwordEncoder = passwordEncoder;
     this.userFactory = userFactory;
   }
 
@@ -60,20 +53,5 @@ public class RegistrationServiceImpl implements RegistrationService {
     UserEntity userEntity = usersService.getUser(username);
 
     return userFactory.createUserDto(userEntity);
-  }
-
-  @Override
-  public void changePassword(String username, PasswordChangeDto passwordDetails) {
-    UserEntity userEntity = usersService.getUser(username);
-
-    boolean matches =
-        passwordEncoder.matches(passwordDetails.getOldPassword(), userEntity.getPassword());
-
-    if (!matches) {
-      throw new PasswordMismatchException();
-    }
-
-    userEntity.setPassword(passwordEncoder.encode(passwordDetails.getNewPassword()));
-    usersService.saveUser(userEntity);
   }
 }

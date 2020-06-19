@@ -9,4 +9,5 @@ public class UserPersonalDetailsDto {
 
   private String name;
   private String surname;
+  private String email;
 }
